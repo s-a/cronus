@@ -2,17 +2,90 @@
 <html>
 <head>
 	<title></title>
+	<script src="https://fb.me/react-15.0.2.min.js"></script>
+	<script src="https://fb.me/react-dom-15.0.2.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.23/browser.min.js"></script>
+
 	<script src="socket.io.js"></script>
-	<script>
-		var socket = io.connect('http://localhost');
-		socket.on('news', function (data) {
-			console.log(data);
-			document.getElementById("state").innerHTML = data.hello;
-			//socket.emit('my other event', { my: 'data' });
-		});
-	</script>	
+	<script src="app.js" type="text/babel"></script>
+
+	<style type="text/css">
+	* {
+	    padding:0;
+	    margin:0;
+	}
+
+	html{
+	    font:14px normal Arial, sans-serif;
+	    color:#626771;
+	    background-color:#fff;
+	}
+
+	body{
+	    padding:60px;
+	    text-align: center;
+	}
+
+	h1{
+	    font-size:18px;
+	    margin-bottom:20px;
+	}
+
+	#services{
+	    list-style: none;
+	    display: inline-block;
+	    width: 340px;
+	    text-align: left;
+	}
+
+	#services p{
+	    display: block;
+	    padding: 15px 20px;
+	    background-color: #F8F8F8;
+	    color: #7B8585;
+	    margin-bottom: 3px;
+	    position: relative;
+	    cursor: pointer;
+	    
+	    transition: 0.3s;
+	}
+
+	#services p b{
+	    position: absolute;
+	    right: 28px;
+	    line-height: 16px;
+	    width: 100px;
+	    color: #808787;
+	    text-align: right;
+	}
+
+	#services p:hover{
+	    background-color:#d8f2f1;
+	}
+
+	#services p.active{
+	    color:#fff;
+	    background-color:#41c7c2;
+	}
+
+	#services p.active b{
+	    color: #fff;
+	}
+
+	#total{
+	    background: none !important;
+	    cursor: default !important;
+	    padding-top: 10px !important;
+	}
+	</style>
 </head>
 <body>
 	<div id="state"></div>
+
+	
+
+	<div id="container">
+	    <!-- This element's contents will be replaced with your component. -->
+	</div>
 </body>
 </html>

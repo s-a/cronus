@@ -17,10 +17,10 @@ function JobController(io) {
 	      level: "info",
 	      stream: process.stdout
 	    },
-	    {
+	    /*{
 	      level: "info",
 	      path: path.join(path.resolve(argv.logFolder || __dirname), "app.log")
-	    },
+	    },*/
 	    {
 	      level: "error",
 	      path: path.join(path.resolve(argv.logFolder || __dirname), "error.log")
@@ -76,6 +76,8 @@ JobController.prototype.loadJob = function(path, fileinfo) {
 			job.test(self);
 		});
 
+		//cron.job = job;
+		this.jobs[path] = job;
 		this.crons[path] = cron;
 		cron.start();
 
