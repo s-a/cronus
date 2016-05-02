@@ -1,3 +1,5 @@
+"use strict";
+
 var Job = function() {
 	this.cronPattern = "* * * * * *";
 	this.title = "test22";
@@ -7,7 +9,8 @@ var Job = function() {
 };
 
 
-Job.prototype.test = function() {
+Job.prototype.test = function(controller) {
+	controller.log.info("done");
 	return true;
 };
 
