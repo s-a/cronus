@@ -1,0 +1,32 @@
+{
+  "name": "cronos",
+  "version": "0.0.1",
+  "description": "monitoring tool",
+  "main": "app.js",
+  "directories": {
+    "test": "tests"
+  },
+  "dependencies": {
+    "chokidar": "^1.4.3",
+    "cron": "^1.1.0",
+    "express": "^4.13.4",
+    "glob": "^7.0.3",
+    "socket.io": "^1.4.5",
+    "tedious": "^1.14.0",
+    "wmi-client": "^0.3.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/s-a/cronus.git"
+  },
+  "author": "s-a",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/s-a/cronus/issues"
+  },
+  "homepage": "https://github.com/s-a/cronus#readme"
+}
