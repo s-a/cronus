@@ -30,8 +30,13 @@
 		x.setState({items:s});
 	};
 
+	var jobDoneErr = function (data) {
+		console.error(data);
+		jobDone(data);
+	};
+
 	socket.on("job-done", jobDone);
-	socket.on("error", jobDone);
+	socket.on("error", jobDoneErr);
 
 
 
@@ -45,7 +50,7 @@
 	    render: function() {
 	        var self = this;
 	        var services = this.props.items.map(function(s){
-	            return <Service log={s.log} lastStart={s.lastStart} name={s.name} description={s.description} price={s.price} active={s.active} addTotal={self.addTotal} />;
+	            return <Service cronPattern={s.cronPattern} log={s.log} lastStart={s.lastStart} name={s.name} description={s.description} price={s.price} active={s.active} addTotal={self.addTotal} />;
 	        });
 	        return <div>
 	                    <h1>Our services</h1>
@@ -65,7 +70,7 @@
 	        var items = this.props.items || [];
 
 	        var logitems = items.map(function(s){
-	            return <i className={"fa " + (s.err ? "fa-exclamation-triangle" : "fa-check-square") + " state-err-" + s.err} aria-hidden="true"></i>;
+	            return <i title={"Last start: " + moment(s.date).calendar()} className={"fa " + (s.err ? "fa-exclamation-triangle" : "fa-check-square") + " state-err-" + s.err} aria-hidden="true"></i>;
 	        });
 
 	        return <div>{this.props.lastStart}<ol>
@@ -88,8 +93,8 @@
 	    },
 	    render: function(){
 	        return  <div className={ this.state.active ? 'active' : '' } onClick={this.clickHandler}>
-	                    {this.props.description} <b>{this.props.name} </b> 
-                    	<ServiceLog lastStart={"Last start: " + moment(this.props.lastStart).calendar() + " (" + moment(this.props.lastStart).fromNow() + ")"} items={this.props.log} />
+	                    {this.props.description} <i>({this.props.cronPattern})</i> <b>{this.props.name}</b> 
+                    	<ServiceLog lastStart={"Last start: " + moment(this.props.lastStart).calendar()} items={this.props.log} />
 	                </div>;
 	    }
 	});
