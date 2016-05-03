@@ -4,11 +4,20 @@ Schedules custom monitoring jobs and servers a [socket.io](http://socket.io/) co
 
 ## Installation
 ```bash
-git clone https://github.com/s-a/cronus.git
-npm install
-npm start
-# node server/app.js --port 3000 --folder ./jobs
+$ git clone https://github.com/s-a/cronus.git;
+$ cd cronus;
+$ npm install;
 ```
+
+## Start
+```bash
+$ npm start;
+# or
+# $node server/app.js --port 3000 --folder ./jobs [--logFolder d:\logs];
+```
+
+## Cron patterns
+Description : [https://en.wikipedia.org/wiki/Cron](https://en.wikipedia.org/wiki/Cron)
 
 ## Example monitor job
 ```javascript
@@ -24,6 +33,7 @@ var Job = function() {
 
 
 Job.prototype.test = function(controller) {
+	// your job code here.
 	return true;
 };
 
