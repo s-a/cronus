@@ -2,7 +2,7 @@
 
 var Job = function() {
 	this.cronPattern = "* * * * * *";
-	this.name = "test22";
+	this.name = "test24";
 	this.description = "You will see this message every second";
 
 	return this;

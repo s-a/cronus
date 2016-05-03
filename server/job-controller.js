@@ -73,6 +73,7 @@ JobController.prototype.loadJob = function(path, fileinfo) {
 		this.log.info("prepare cron ", path);
 		var cron = new CronJob(job.cronPattern, function() {
 			self.log.info("exec ", this.filename);
+			job.lastStart = new Date().getTime();
 			job.test(self);
 		});
 

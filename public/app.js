@@ -3,18 +3,30 @@
 	var url = location.protocol + "//" + location.hostname + (location.port ? ":" + location.port : "");
 	var socket = io.connect(url);
 	var x;
+	var s = [];
 	socket.on("init", function (data) {
-		var s = [];
 		console.warn(data);
 		for (var key in data.crons) {
 			s.push(data.crons[key]);
 		}
 
-		console.log(s);
 		render(s);
-		document.getElementById("state").innerHTML = data.hello;
+		console.log(x);
 		//socket.emit("my other event", { my: "data" });
 	});
+
+	socket.on("job-done", function (data) {
+		for (var i = 0; i < s.length; i++) {
+			if (s[i].filename === data.job.filename){
+				s[i] = data.job;
+				break;
+			}
+		}
+		x.setState({items:s});
+		console.log(data);
+		//socket.emit("my other event", { my: "data" });
+	});
+
 
 	var ServiceChooser = React.createClass({
 
@@ -35,7 +47,7 @@
 	            // Create a new Service component for each item in the items array.
 	            // Notice that I pass the self.addTotal function to the component.
 
-	            return <Service name={s.name} description={s.description} price={s.price} active={s.active} addTotal={self.addTotal} />;
+	            return <Service lastStart={s.lastStart} name={s.name} description={s.description} price={s.price} active={s.active} addTotal={self.addTotal} />;
 	        });
 
 	        return <div>
@@ -62,7 +74,7 @@
 	    },
 	    render: function(){
 	        return  <p className={ this.state.active ? 'active' : '' } onClick={this.clickHandler}>
-	                    {this.props.description} <b>{this.props.name}</b>
+	                    {this.props.description} <b>{this.props.name} {this.props.lastStart}</b> 
 	                </p>;
 	    }
 	});
