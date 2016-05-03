@@ -9,12 +9,7 @@ var Job = function() {
 };
 
 
-Job.prototype.test = function(controller) {
-	// controller.log.info("done");
-
-	//throw new Error ("errors"); 
-	// controller.io.sockets.emit("job-done", { job: this,  msg: "done",  result: true });
-
+Job.prototype.test = function(/*controller*/) {
 	return true;
 };
 

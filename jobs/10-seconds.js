@@ -9,7 +9,7 @@ var Job = function() {
 };
 
 
-Job.prototype.test = function(controller) {
+Job.prototype.test = function(/*controller*/) {
 	return true;
 };
 
