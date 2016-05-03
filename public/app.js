@@ -53,12 +53,12 @@
 	            return <Service cronPattern={s.cronPattern} log={s.log} lastStart={s.lastStart} name={s.name} description={s.description} price={s.price} active={s.active} addTotal={self.addTotal} />;
 	        });
 	        return <div>
-	                    <h1>Our services</h1>
-	                    <div id="services">
-	                        {services}
-	                        <p id="total">Total <b></b></p>
-	                    </div>
-	                </div>;
+                <h1>Our services</h1>
+                <div id="services">
+                    {services}
+                    <p id="total">Total <b></b></p>
+                </div>
+            </div>;
 	    }
 	});
 
@@ -70,12 +70,15 @@
 	        var items = this.props.items || [];
 
 	        var logitems = items.map(function(s){
-	            return <i title={"Last start: " + moment(s.date).calendar()} className={"fa " + (s.err ? "fa-exclamation-triangle" : "fa-check-square") + " state-err-" + s.err} aria-hidden="true"></i>;
+	            return <i title={"Started: " + moment(s.date).calendar()} className={"fa " + (s.err ? "fa-exclamation-triangle" : "fa-check-square") + " state-err-" + s.err} aria-hidden="true"></i>;
 	        });
 
-	        return <div>{this.props.lastStart}<ol>
-	        			{logitems}
-	               	</ol></div>;
+	        return <div>
+	        	{this.props.lastStart}
+	        	<ol>
+        			{logitems}
+               	</ol>
+           	</div>;
 
 	    }
 	});

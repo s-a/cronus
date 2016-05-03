@@ -1,9 +1,9 @@
 "use strict";
 
 var Job = function() {
-	this.cronPattern = "* * * * * *";
-	this.name = "unicorn";
-	this.description = "You will see this message every second";
+	this.cronPattern = "*/5 * * * * *";
+	this.name = "unicorn 5";
+	this.description = "You will see this message every 5 seconds";
 
 	return this;
 };

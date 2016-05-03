@@ -59,11 +59,13 @@ JobController.prototype.initialize = function() {
 
 JobController.prototype.loadJob = function(path, fileinfo) {
 	var job;
+	var self = this;
+	var maxLogItems = 80;
 	try{
 		if (this.crons[path]){
+			self.log.info("stop ", path);
 			this.crons[path].stop();
 		}
-		var self = this;
 		delete require.cache[require.resolve(path)];
 		var JOB = require(path);
 		job = new JOB()
@@ -86,8 +88,8 @@ JobController.prototype.loadJob = function(path, fileinfo) {
 				job.log.push({err: true, date: job.lastStart, exception: ex});
 				self.io.sockets.emit("error", { job : job, result: result, exception: ex });
 			}
-			if (job.log.length > 10){
-				job.log = job.log.slice(1).slice(-10);
+			if (job.log.length > maxLogItems){
+				job.log = job.log.slice(1).slice(-maxLogItems);
 			}
 			self.io.sockets.emit("job-done", { job : job, result: result });
 		});
@@ -97,9 +99,11 @@ JobController.prototype.loadJob = function(path, fileinfo) {
 		cron.start();
 
 	} catch(e){
-		job.log.push({err: true, date: job.lastStart, exception: e});
-		if (job.log.length > 10){
-			job.log = job.log.slice(1).slice(-10);
+		if(job){
+			job.log.push({err: true, date: job.lastStart, exception: e});
+			if (job.log.length > maxLogItems){
+				job.log = job.log.slice(1).slice(-maxLogItems);
+			}
 		}
 		this.io.sockets.emit("error", { job : job, exception: e, filename: path, fileinfo: fileinfo });
 		this.log.error(e);
