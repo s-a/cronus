@@ -60,7 +60,7 @@ JobController.prototype.initialize = function() {
 JobController.prototype.loadJob = function(path, fileinfo) {
 	var job;
 	var self = this;
-	var maxLogItems = 80;
+	var maxLogItems = 40;
 	try{
 		if (this.crons[path]){
 			self.log.info("stop ", path);
