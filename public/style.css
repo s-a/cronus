@@ -127,3 +127,11 @@ body > .container {
 code {
   font-size: 80%;
 }
+
+.ellipsed{
+  font-size: 22px;
+  white-space: nowrap;
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

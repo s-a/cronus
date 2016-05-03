@@ -18,6 +18,8 @@
 
 	var jobDone = function (data) {
 		var found = false;
+
+ 
 		for (var i = 0; i < s.length; i++) {
 			if (s[i].filename === data.job.filename){
 				s[i] = data.job;
@@ -26,7 +28,7 @@
 			}
 		}
 		if (!found){
-			s.push(data.job);
+			s.unshift(data.job);
 		}
 		x.setState({items:s});
 
@@ -78,7 +80,7 @@
 	        });
 
 	        return <div className="row">
-	        			<div className="col-md-12">
+	        			<div className="col-md-12 ellipsed">
 		        			{logitems}
 	        			</div>
            			</div>;

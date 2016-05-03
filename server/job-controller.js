@@ -100,10 +100,10 @@ JobController.prototype.loadJob = function(path, fileinfo) {
 				job.lastStart = new Date().getTime();
 				job.prettyCron = prettyCron.toString(job.cronPattern);
 				result = job.test(self);
-				job.log.push({err: !result, date: job.lastStart});
+				job.log.unshift({err: !result, date: job.lastStart});
 			} catch(ex){
 				self.log.error(ex);
-				job.log.push({err: true, date: job.lastStart, exception: ex});
+				job.log.unshift({err: true, date: job.lastStart, exception: ex});
 				self.io.sockets.emit("error", { job : job, result: result, exception: ex });
 			}
 			if (job.log.length > maxLogItems){
@@ -118,7 +118,7 @@ JobController.prototype.loadJob = function(path, fileinfo) {
 
 	} catch(e){
 		if(job){
-			job.log.push({err: true, date: job.lastStart, exception: e});
+			job.log.unshift({err: true, date: job.lastStart, exception: e});
 			if (job.log.length > maxLogItems){
 				job.log = job.log.slice(1).slice(-maxLogItems);
 			}
