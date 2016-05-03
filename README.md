@@ -1,4 +1,5 @@
 # cronus
+![logo](/logo.jpg "logo")
 Schedules custom monitoring jobs and servers a [socket.io](http://socket.io/) connected monitoring website.
 
 
@@ -9,7 +10,12 @@ $ cd cronus;
 $ npm install;
 ```
 
-## Start
+## Devlop and test scripts
+```bash
+$ node server/test.js --script jobs/1-minute.js;
+```
+
+## Start server
 ```bash
 $ npm start;
 # or
@@ -30,7 +36,7 @@ $ npm start;
 └───────────────────────── second (0 - 59, optional)
 ```
 
-Detailed description : [https://en.wikipedia.org/wiki/Cron](https://en.wikipedia.org/wiki/Cron)
+Detailed description : [https://github.com/ncb000gt/node-cron](https://github.com/ncb000gt/node-cron)
 
 ## Example monitor job
 ```javascript
