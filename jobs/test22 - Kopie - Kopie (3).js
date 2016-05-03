@@ -2,7 +2,7 @@
 
 var Job = function() {
 	this.cronPattern = "* * * * * *";
-	this.name = "test22";
+	this.name = "unicorn";
 	this.description = "You will see this message every second";
 
 	return this;
@@ -10,9 +10,10 @@ var Job = function() {
 
 
 Job.prototype.test = function(controller) {
-	controller.log.info("done");
+	// controller.log.info("done");
 
-	controller.io.sockets.emit("job-done", { job:this, filename: __filename, msg : "done",  result:true });
+	//throw new Error ("errors"); 
+	// controller.io.sockets.emit("job-done", { job:this,  msg : "done",  result: true });
 
 	return true;
 };

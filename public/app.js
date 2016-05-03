@@ -5,51 +5,48 @@
 	var x;
 	var s = [];
 	socket.on("init", function (data) {
-		console.warn(data);
+		s = [];
+
 		for (var key in data.crons) {
 			s.push(data.crons[key]);
 		}
 
 		render(s);
-		console.log(x);
-		//socket.emit("my other event", { my: "data" });
+		
 	});
 
-	socket.on("job-done", function (data) {
+	var jobDone = function (data) {
+		var found = false;
 		for (var i = 0; i < s.length; i++) {
 			if (s[i].filename === data.job.filename){
 				s[i] = data.job;
+				found = true;
 				break;
 			}
 		}
+		if (!found){
+			s.push(data.job);
+		}
 		x.setState({items:s});
-		console.log(data);
-		//socket.emit("my other event", { my: "data" });
-	});
+	};
+
+	socket.on("job-done", jobDone);
+	socket.on("error", jobDone);
+
 
 
 	var ServiceChooser = React.createClass({
-
 	    getInitialState: function(){
 	        return { total: 0 };
 	    },
-
 	    addTotal: function( price ){
 	        this.setState( { total: this.state.total + price } );
 	    },
-
 	    render: function() {
-
 	        var self = this;
-
 	        var services = this.props.items.map(function(s){
-
-	            // Create a new Service component for each item in the items array.
-	            // Notice that I pass the self.addTotal function to the component.
-
-	            return <Service lastStart={s.lastStart} name={s.name} description={s.description} price={s.price} active={s.active} addTotal={self.addTotal} />;
+	            return <Service log={s.log} lastStart={s.lastStart} name={s.name} description={s.description} price={s.price} active={s.active} addTotal={self.addTotal} />;
 	        });
-
 	        return <div>
 	                    <h1>Our services</h1>
 	                    <div id="services">
@@ -57,6 +54,23 @@
 	                        <p id="total">Total <b></b></p>
 	                    </div>
 	                </div>;
+	    }
+	});
+
+	var ServiceLog = React.createClass({
+
+	   
+	    render: function() {
+	        var self = this;
+	        var items = this.props.items || [];
+
+	        var logitems = items.map(function(s){
+	            return <i className={"fa " + (s.err ? "fa-exclamation-triangle" : "fa-check-square") + " state-err-" + s.err} aria-hidden="true"></i>;
+	        });
+
+	        return <div>{this.props.lastStart}<ol>
+	        			{logitems}
+	               	</ol></div>;
 
 	    }
 	});
@@ -73,9 +87,10 @@
 	        this.props.addTotal( active ? this.props.price : -this.props.price );
 	    },
 	    render: function(){
-	        return  <p className={ this.state.active ? 'active' : '' } onClick={this.clickHandler}>
-	                    {this.props.description} <b>{this.props.name} {this.props.lastStart}</b> 
-	                </p>;
+	        return  <div className={ this.state.active ? 'active' : '' } onClick={this.clickHandler}>
+	                    {this.props.description} <b>{this.props.name} </b> 
+                    	<ServiceLog lastStart={"Last start: " + moment(this.props.lastStart).calendar() + " (" + moment(this.props.lastStart).fromNow() + ")"} items={this.props.log} />
+	                </div>;
 	    }
 	});
 

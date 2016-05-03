@@ -58,32 +58,50 @@ JobController.prototype.initialize = function() {
 };
 
 JobController.prototype.loadJob = function(path, fileinfo) {
+	var job;
 	try{
 		if (this.crons[path]){
 			this.crons[path].stop();
 		}
 		var self = this;
+		delete require.cache[require.resolve(path)];
 		var JOB = require(path);
-		var job = new JOB()
+		job = new JOB()
+		job.log = [];
 		job.filename = path;
 		job.fileinfo = fileinfo;
 		this.log.info("testing monitor method .test()", path);
 		job.test(this);
 
 		this.log.info("prepare cron ", path);
+		var result = false;
 		var cron = new CronJob(job.cronPattern, function() {
-			self.log.info("exec ", this.filename);
+			self.log.info("exec ", job.filename);
 			job.lastStart = new Date().getTime();
-			job.test(self);
+			try{
+				result = job.test(self);
+				job.log.push({err: !result, date: job.lastStart});
+			} catch(ex){
+				self.log.error(ex);
+				job.log.push({err: true, date: job.lastStart, exception: ex});
+				self.io.sockets.emit("error", { job : job, result: result, exception: ex });
+			}
+			if (job.log.length > 10){
+				job.log = job.log.slice(1).slice(-10);
+			}
+			self.io.sockets.emit("job-done", { job : job, result: result });
 		});
 
-		//cron.job = job;
 		this.jobs[path] = job;
 		this.crons[path] = cron;
 		cron.start();
 
 	} catch(e){
-		this.io.sockets.emit('error', { exception: e, filename: path, fileinfo: fileinfo });
+		job.log.push({err: true, date: job.lastStart, exception: e});
+		if (job.log.length > 10){
+			job.log = job.log.slice(1).slice(-10);
+		}
+		this.io.sockets.emit("error", { job : job, exception: e, filename: path, fileinfo: fileinfo });
 		this.log.error(e);
 	}
 };
