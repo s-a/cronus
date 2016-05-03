@@ -6,7 +6,8 @@ var chokidar = require("chokidar");
 var minimist = require("minimist");
 var bunyan = require("bunyan");
 var CronJob = require("cron").CronJob;
-
+var prettyCron = require('prettycron');
+/*var parser = require('cron-parser');*/
 
 function JobController(io) {
 	var argv = minimist(process.argv.slice(2));
@@ -72,15 +73,32 @@ JobController.prototype.loadJob = function(path, fileinfo) {
 		job.log = [];
 		job.filename = path;
 		job.fileinfo = fileinfo;
+		job.prettyCron = prettyCron.toString(job.cronPattern);
+
+ 		/*var interval = parser.parseExpression(job.cronPattern, {
+ 			currentDate : new Date(),
+  			iterator: true
+ 		});
+		job.nextStart = interval.next().value._date.toDate().getTime();*/
+	 
+
 		this.log.info("testing monitor method .test()", path);
 		job.test(this);
+
 
 		this.log.info("prepare cron ", path);
 		var result = false;
 		var cron = new CronJob(job.cronPattern, function() {
-			self.log.info("exec ", job.filename);
-			job.lastStart = new Date().getTime();
 			try{
+		 		/*var i = parser.parseExpression(job.cronPattern, {
+		 			currentDate : new Date(),
+		  			iterator: true
+		 		});
+				job.nextStart = i.next().value._date.toDate().getTime();*/
+
+				self.log.info("exec ", job.filename);
+				job.lastStart = new Date().getTime();
+				job.prettyCron = prettyCron.toString(job.cronPattern);
 				result = job.test(self);
 				job.log.push({err: !result, date: job.lastStart});
 			} catch(ex){

@@ -47,7 +47,7 @@
 	    render: function() {
 	        var self = this;
 	        var services = this.props.items.map(function(s){
-	            return <Service cronPattern={s.cronPattern} log={s.log} lastStart={s.lastStart} name={s.name} description={s.description} price={s.price} active={s.active} addTotal={self.addTotal} />;
+	            return <Service prettyCron={s.prettyCron} cronPattern={s.cronPattern} log={s.log} lastStart={s.lastStart} name={s.name} description={s.description} price={s.price} active={s.active} addTotal={self.addTotal} />;
 	        });
 	        return <div>
                 <h1>Our services</h1>
@@ -96,8 +96,8 @@
 		                    	<i className={"job-icon " + (this.props.iconCssClassName ? this.props.iconCssClassName : "fa fa-signal")} aria-hidden="true"></i> 
 			                    {this.props.description} 
 		        			</div>
-		        			<div className="col-md-5">
-			                    {this.props.cronPattern} - {moment(this.props.lastStart).calendar()}
+		        			<div className="col-md-5" title={this.props.prettyCron}>
+			                    "{this.props.cronPattern}" | lastStart: {moment(this.props.lastStart).calendar()}  
 		        			</div>
 		        			<div className="col-md-1">
 		                    	<b>{this.props.name}</b> 
