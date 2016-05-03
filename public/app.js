@@ -99,14 +99,14 @@
 	        this.props.addTotal( active ? this.props.price : -this.props.price );
 	    },
 	    render: function(){
-	        return <div className="container paper-shadow-top-z-2 card">
+	        return <div className="container paper-shadow-top-z-2 card" title={this.props.prettyCron}>
 		        		<div className={ "row " + (this.state.active ? 'active' : '') } onClick={this.clickHandler}>
 		        			<div className="col-md-6">
 		                    	<i className={"job-icon " + (this.props.iconCssClassName ? this.props.iconCssClassName : "fa fa-signal")} aria-hidden="true"></i> 
 			                    {this.props.description} 
 		        			</div>
-		        			<div className="col-md-5" title={this.props.prettyCron}>
-			                    "{this.props.cronPattern}" | lastStart: {moment(this.props.lastStart).calendar()}  
+		        			<div className="col-md-5">
+			                    <code>"{this.props.cronPattern}"</code> | lastStart: {moment(this.props.lastStart).calendar()}  
 		        			</div>
 		        			<div className="col-md-1">
 		                    	<b>{this.props.name}</b> 
