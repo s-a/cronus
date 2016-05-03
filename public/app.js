@@ -59,7 +59,6 @@
 	            return <Service prettyCron={s.prettyCron} cronPattern={s.cronPattern} log={s.log} lastStart={s.lastStart} name={s.name} description={s.description} price={s.price} active={s.active} addTotal={self.addTotal} />;
 	        });
 	        return <div>
-                <h1>Our services</h1>
                 <div id="services">
                     {services}
                 </div>
