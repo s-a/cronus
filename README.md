@@ -1,6 +1,6 @@
 # cronus
-![logo](/logo.jpg "logo")
-Schedules custom monitoring jobs and servers a [socket.io](http://socket.io/) connected monitoring website.
+![logo](/logo.png "logo")
+Schedules custom monitoring jobs and serves a [socket.io](http://socket.io/) connected monitoring website.
 
 
 ## Installation
