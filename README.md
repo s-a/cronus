@@ -58,5 +58,6 @@ Job.prototype.test = function(controller) {
 
 module.exports = Job;
 ```
+More example jobs can be found at [/jobs/](/jobs/).  
 
 ![Screenshot](/screenshot.jpg "Screenshot")
