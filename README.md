@@ -10,7 +10,7 @@ $ cd cronus;
 $ npm install;
 ```
 
-## Devlop and test scripts
+## Develop and test monitoring script modules
 ```bash
 $ node server/test.js --script jobs/1-minute.js;
 ```
