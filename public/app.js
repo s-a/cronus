@@ -1,5 +1,6 @@
 "use strict";
 (function(io){
+
 	var url = location.protocol + "//" + location.hostname + (location.port ? ":" + location.port : "");
 	var socket = io.connect(url);
 	var x;
@@ -28,6 +29,14 @@
 			s.push(data.job);
 		}
 		x.setState({items:s});
+
+		/*if (data.result !== true){
+			var $body = $("body");
+			setInterval(function(){
+				document.title = (document.title === original) ? "MONITOR ERROR" : original;
+
+			}, 1000);
+		}*/
 	};
 
 	var jobDoneErr = function (data) {

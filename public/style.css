@@ -1,5 +1,11 @@
 
 
+
+.error{
+  background-color: red;
+  color: white;
+}
+
 .state-err-true{
 	color:red;
 }
