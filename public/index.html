@@ -1,95 +1,24 @@
 <!DOCTYPE html>
 <html>
 <head>
+ 	<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 	<title></title>
 	<script src="https://fb.me/react-15.0.2.min.js"></script>
 	<script src="https://fb.me/react-dom-15.0.2.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.23/browser.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment.min.js"></script>
-
+	
 	<script src="socket.io.js"></script>
 	<script src="app.js" type="text/babel"></script>
 
+	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
 
+	<link rel="stylesheet" type="text/css" href="style.css">
 	<style type="text/css">
-	* {
-	    padding:0;
-	    margin:0;
-	}
-
-	html{
-	    font:14px normal Arial, sans-serif;
-	    color:#626771;
-	    background-color:#fff;
-	}
-
-	body{
-	    padding:60px;
-	    text-align: center;
-	}
-
-	h1{
-	    font-size:18px;
-	    margin-bottom:20px;
-	}
-
-	#services{
-	    list-style: none;
-	    display: inline-block;
-	    width: 100%;
-	    text-align: left;
-	}
-
-	#services div{
-	    display: block;
-	    padding: 15px 20px;
-	    background-color: #F8F8F8;
-	    color: #7B8585;
-	    margin-bottom: 3px;
-	    position: relative;
-	    cursor: pointer;
-	    
-	    transition: 0.3s;
-	}
-
-	#services div b{
-	    position: absolute;
-	    right: 28px;
-	    line-height: 16px;
-	    width: 100px;
-	    color: #808787;
-	    text-align: right;
-	}
-
-	#services div:hover{
-	    background-color:#d8f2f1;
-	}
-
-	#services div.active{
-	    color:#fff;
-	    background-color:#41c7c2;
-	}
-
-	#services div.active b{
-	    color: #fff;
-	}
-
-	#total{
-	    background: none !important;
-	    cursor: default !important;
-	    padding-top: 10px !important;
-	}
-
-	.state-err-true{
-		color:red;
-	}
-	.state-err-false{
-		color:green;
-	}
-	.fa{
-		margin-right: 5px;
-	}
+	
 	</style>
 </head>
 <body>

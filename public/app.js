@@ -42,10 +42,7 @@
 
 	var ServiceChooser = React.createClass({
 	    getInitialState: function(){
-	        return { total: 0 };
-	    },
-	    addTotal: function( price ){
-	        this.setState( { total: this.state.total + price } );
+	        return { };
 	    },
 	    render: function() {
 	        var self = this;
@@ -56,7 +53,6 @@
                 <h1>Our services</h1>
                 <div id="services">
                     {services}
-                    <p id="total">Total <b></b></p>
                 </div>
             </div>;
 	    }
@@ -73,12 +69,11 @@
 	            return <i title={"Started: " + moment(s.date).calendar()} className={"fa " + (s.err ? "fa-exclamation-triangle" : "fa-check-square") + " state-err-" + s.err} aria-hidden="true"></i>;
 	        });
 
-	        return <div>
-	        	{this.props.lastStart}
-	        	<ol>
-        			{logitems}
-               	</ol>
-           	</div>;
+	        return <div className="row">
+	        			<div className="col-md-12">
+		        			{logitems}
+	        			</div>
+           			</div>;
 
 	    }
 	});
@@ -95,9 +90,21 @@
 	        this.props.addTotal( active ? this.props.price : -this.props.price );
 	    },
 	    render: function(){
-	        return  <div className={ this.state.active ? 'active' : '' } onClick={this.clickHandler}>
-	                    {this.props.description} <i>({this.props.cronPattern})</i> <b>{this.props.name}</b> 
+	        return <div className="container paper-shadow-top-z-2 card">
+		        		<div className={ "row " + (this.state.active ? 'active' : '') } onClick={this.clickHandler}>
+		        			<div className="col-md-6">
+		                    	<i className={"job-icon " + (this.props.iconCssClassName ? this.props.iconCssClassName : "fa fa-signal")} aria-hidden="true"></i> 
+			                    {this.props.description} 
+		        			</div>
+		        			<div className="col-md-5">
+			                    {this.props.cronPattern} - {moment(this.props.lastStart).calendar()}
+		        			</div>
+		        			<div className="col-md-1">
+		                    	<b>{this.props.name}</b> 
+		        			</div>
+		                </div>
                     	<ServiceLog lastStart={"Last start: " + moment(this.props.lastStart).calendar()} items={this.props.log} />
+		                
 	                </div>;
 	    }
 	});
