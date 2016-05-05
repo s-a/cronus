@@ -19,9 +19,14 @@
     "tedious": "^1.14.0",
     "wmi-client": "^0.3.0"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "mocha": "^2.4.5",
+    "mocha-jshint": "^2.3.1"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "node node_modules/mocha/bin/_mocha",
+    "debug-mocha": "iron-node node_modules/mocha/bin/_mocha",
+    "debug": "iron-node server/app.js --port 3000 --folder ./jobs",
     "dev": "node node_modules/nodemon/bin/nodemon.js ./server/app.js",
     "start": "node server/app.js --port 3000 --folder ./jobs"
   },
