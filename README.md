@@ -12,6 +12,8 @@ Schedules custom monitoring jobs and serves a [socket.io](http://socket.io/) con
 [![Massachusetts Institute of Technology (MIT)](https://s-a.github.io/license/img/mit.svg)](/LICENSE.md#mit)
 [![Donate](http://s-a.github.io/donate/donate.svg)](http://s-a.github.io/donate/)
 
+## Demo
+![demo](/demo.gif "demo")
 
 ## Installation
 ```bash
@@ -68,4 +70,3 @@ module.exports = Job;
 ```
 More example jobs can be found at [/jobs/](/jobs/).  
 
-![demo](/demo.gif "demo")
