@@ -28,7 +28,8 @@
     "debug-mocha": "iron-node node_modules/mocha/bin/_mocha",
     "debug": "iron-node server/app.js --port 3000 --folder ./jobs",
     "dev": "node node_modules/nodemon/bin/nodemon.js ./server/app.js",
-    "start": "node server/app.js --port 3000 --folder ./jobs"
+    "start": "node server/app.js --port 3000 --folder ./jobs",
+    "bump": "npm version patch && git push && git push --tags && npm publish",
   },
   "repository": {
     "type": "git",
