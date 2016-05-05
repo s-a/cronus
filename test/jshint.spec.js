@@ -3,7 +3,6 @@
 require("mocha-jshint")({
 	paths: [
 		"server/",
-		"test/",
-		"public/"
+		"test/"
 	]
 });
