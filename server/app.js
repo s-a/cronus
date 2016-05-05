@@ -22,10 +22,10 @@ var jobController = new JobController(io);
 
  
 io.on('connection', function (socket) {
-  socket.emit('init', { crons: jobController.jobs });
-  /*socket.on('my other event', function (data) {
-    console.log(data);
-  });*/
+	socket.emit('init', { crons: jobController.jobs });
+	/*socket.on('my other event', function (data) {
+	console.log(data);
+	});*/
 });
 
 jobController.log.info("starting server at ", port);

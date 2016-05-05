@@ -12,21 +12,21 @@ var prettyCron = require('prettycron');
 function JobController(io) {
 	var argv = minimist(process.argv.slice(2));
 	this.log = bunyan.createLogger({
-	  name: "cronus",
-	  streams: [
-	    {
-	      level: "info",
-	      stream: process.stdout
-	    },
-	    /*{
-	      level: "info",
-	      path: path.join(path.resolve(argv.logFolder || __dirname), "app.log")
-	    },*/
-	    {
-	      level: "error",
-	      path: path.join(path.resolve(argv.logFolder || __dirname), "error.log")
-	    }
-	  ]
+		name: "cronus",
+		streams: [
+			{
+				level: "info",
+				stream: process.stdout
+			},
+			/*{
+			  level: "info",
+			  path: path.join(path.resolve(argv.logFolder || __dirname), "app.log")
+			},*/
+			{
+				level: "error",
+				path: path.join(path.resolve(argv.logFolder || __dirname), "error.log")
+			}
+		]
 	});
 
 	this.io = io;
@@ -51,10 +51,10 @@ JobController.prototype.initialize = function() {
 		});
 
 		watcher
-		  .on("add", this.fileChange.bind(this))
-		  .on("change", this.fileChange.bind(this))
-		  .on("unlink", this.fileChange.bind(this))
-		  .on("rename", this.fileChange.bind(this));
+		.on("add", this.fileChange.bind(this))
+		.on("change", this.fileChange.bind(this))
+		.on("unlink", this.fileChange.bind(this))
+		.on("rename", this.fileChange.bind(this));
 	}
 };
 
@@ -75,10 +75,10 @@ JobController.prototype.loadJob = function(path, fileinfo) {
 		job.fileinfo = fileinfo;
 		job.prettyCron = prettyCron.toString(job.cronPattern);
 
- 		/*var interval = parser.parseExpression(job.cronPattern, {
- 			currentDate : new Date(),
-  			iterator: true
- 		});
+		/*var interval = parser.parseExpression(job.cronPattern, {
+			currentDate : new Date(),
+			iterator: true
+		});
 		job.nextStart = interval.next().value._date.toDate().getTime();*/
 	 
 
@@ -90,10 +90,10 @@ JobController.prototype.loadJob = function(path, fileinfo) {
 		var result = false;
 		var cron = new CronJob(job.cronPattern, function() {
 			try{
-		 		/*var i = parser.parseExpression(job.cronPattern, {
-		 			currentDate : new Date(),
-		  			iterator: true
-		 		});
+				/*var i = parser.parseExpression(job.cronPattern, {
+					currentDate : new Date(),
+					iterator: true
+				});
 				job.nextStart = i.next().value._date.toDate().getTime();*/
 
 				self.log.info("exec ", job.filename);
