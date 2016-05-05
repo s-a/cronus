@@ -68,4 +68,4 @@ module.exports = Job;
 ```
 More example jobs can be found at [/jobs/](/jobs/).  
 
-![Screenshot](/screenshot.jpg "Screenshot")
+![demo](/demo.gif "demo")
