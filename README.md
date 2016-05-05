@@ -4,7 +4,7 @@ Schedules custom monitoring jobs and serves a [socket.io](http://socket.io/) con
 
 
 [![NPM Version](http://img.shields.io/npm/v/sa-cronus.svg)](https://www.npmjs.org/package/sa-cronus)
-[![Build Status](https://travis-ci.org/s-a/sa-cronus.svg)](https://travis-ci.org/s-a/sa-cronus)
+[![Build Status](https://travis-ci.org/s-a/cronus.svg)](https://travis-ci.org/s-a/cronus)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/af86e9dc06cc43d3947fae9ad343219a)](https://www.codacy.com/app/stephanahlf/cronus?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=s-a/cronus&amp;utm_campaign=Badge_Grade)
 [![Dependency Status](https://david-dm.org/s-a/sa-cronus.svg)](https://david-dm.org/s-a/sa-cronus)
 [![devDependency Status](https://david-dm.org/s-a/sa-cronus/dev-status.svg)](https://david-dm.org/s-a/sa-cronus#info=devDependencies)
