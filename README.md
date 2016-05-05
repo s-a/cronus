@@ -15,9 +15,7 @@ Schedules custom monitoring jobs and serves a [socket.io](http://socket.io/) con
 
 ## Installation
 ```bash
-$ git clone https://github.com/s-a/cronus.git;
-$ cd cronus;
-$ npm install;
+$ npm i -g sa-cronus;
 ```
 
 ## Develop and test monitoring script modules

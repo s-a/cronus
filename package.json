@@ -1,10 +1,10 @@
 {
-  "name": "cronos",
+  "name": "sa-cronus",
   "version": "0.0.1",
   "description": "monitoring tool",
   "main": "app.js",
   "directories": {
-    "test": "tests"
+    "test": "test"
   },
   "dependencies": {
     "bunyan": "^1.8.1",
@@ -39,5 +39,11 @@
   "bugs": {
     "url": "https://github.com/s-a/cronus/issues"
   },
-  "homepage": "https://github.com/s-a/cronus#readme"
+  "homepage": "https://github.com/s-a/cronus#readme",
+  "keywords": [
+    "monitoring",
+    "schedule",
+    "maintenance",
+    "servicing"
+  ]
 }
