@@ -11,6 +11,7 @@ var prettyCron = require('prettycron');
 
 function JobController(io) {
 	var argv = minimist(process.argv.slice(2));
+	this.maxLogItems = 30;
 	this.log = bunyan.createLogger({
 		name: "cronus",
 		streams: [
@@ -58,15 +59,58 @@ JobController.prototype.initialize = function() {
 	}
 };
 
-JobController.prototype.loadJob = function(path, fileinfo) {
-	var job;
+JobController.prototype.schedule = function(job) {
+	this.log.info("prepare cron ", job.filename);
 	var self = this;
-	var maxLogItems = 40;
-	try{
-		if (this.crons[path]){
-			self.log.info("stop ", path);
-			this.crons[path].stop();
+	var result = false;
+	var cron = new CronJob(job.cronPattern, function() {
+		self.log.info("exec ", job.filename);
+		job.lastStart = new Date().getTime();
+		job.prettyCron = prettyCron.toString(job.cronPattern);
+		result = job.test(self);
+		self.emitResult(job, result);
+	});
+
+	this.jobs[job.filename] = job;
+	this.crons[job.filename] = cron;
+	return cron;
+};
+
+
+JobController.prototype.stop = function(path) {
+	if (this.crons[path]){
+		this.log.info("stop ", path);
+		this.crons[path].stop();
+	}
+};
+
+JobController.prototype.emitResult = function(job, result) {
+	if (!job.log){
+		job.log = [];
+	}
+	job.log.unshift({err: !result, date: job.lastStart});
+	if (job.log.length > this.maxLogItems){
+		job.log = job.log.slice(1).slice(-this.maxLogItems);
+	}
+	this.io.sockets.emit("job-done", { job : job, result: result });
+};
+
+JobController.prototype.emitError = function(e, job) {
+	if(job){
+		job.log.unshift({err: true, date: job.lastStart, exception: e});
+		if (job.log.length > this.maxLogItems){
+			job.log = job.log.slice(1).slice(-this.maxLogItems);
 		}
+	}
+	this.io.sockets.emit("error", { job : job, exception: e, result: false });
+	this.log.error(e);
+};
+
+JobController.prototype.load = function(path, fileinfo) {
+	var job;
+
+	try{
+		this.stop(path);
 		delete require.cache[require.resolve(path)];
 		var JOB = require(path);
 		job = new JOB()
@@ -75,62 +119,21 @@ JobController.prototype.loadJob = function(path, fileinfo) {
 		job.fileinfo = fileinfo;
 		job.prettyCron = prettyCron.toString(job.cronPattern);
 
-		/*var interval = parser.parseExpression(job.cronPattern, {
-			currentDate : new Date(),
-			iterator: true
-		});
-		job.nextStart = interval.next().value._date.toDate().getTime();*/
-	 
-
 		this.log.info("testing monitor method .test()", path);
 		job.test(this);
 
 
-		this.log.info("prepare cron ", path);
-		var result = false;
-		var cron = new CronJob(job.cronPattern, function() {
-			try{
-				/*var i = parser.parseExpression(job.cronPattern, {
-					currentDate : new Date(),
-					iterator: true
-				});
-				job.nextStart = i.next().value._date.toDate().getTime();*/
-
-				self.log.info("exec ", job.filename);
-				job.lastStart = new Date().getTime();
-				job.prettyCron = prettyCron.toString(job.cronPattern);
-				result = job.test(self);
-				job.log.unshift({err: !result, date: job.lastStart});
-			} catch(ex){
-				self.log.error(ex);
-				job.log.unshift({err: true, date: job.lastStart, exception: ex});
-				self.io.sockets.emit("error", { job : job, result: result, exception: ex });
-			}
-			if (job.log.length > maxLogItems){
-				job.log = job.log.slice(1).slice(-maxLogItems);
-			}
-			self.io.sockets.emit("job-done", { job : job, result: result });
-		});
-
-		this.jobs[path] = job;
-		this.crons[path] = cron;
+		var cron = this.schedule(job);
 		cron.start();
 
 	} catch(e){
-		if(job){
-			job.log.unshift({err: true, date: job.lastStart, exception: e});
-			if (job.log.length > maxLogItems){
-				job.log = job.log.slice(1).slice(-maxLogItems);
-			}
-		}
-		this.io.sockets.emit("error", { job : job, exception: e, filename: path, fileinfo: fileinfo });
-		this.log.error(e);
+		this.emitError(e,job)
 	}
 };
 
 JobController.prototype.fileChange = function(path, fileinfo) {
 	this.log.info("prepare", path);
-	this.loadJob(path, fileinfo);
+	this.load(path, fileinfo);
 };
 
 module.exports = JobController;
