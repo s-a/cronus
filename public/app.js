@@ -1,6 +1,7 @@
 "use strict";
 (function(io){
 
+	var render;
 	var url = location.protocol + "//" + location.hostname + (location.port ? ":" + location.port : "");
 	var socket = io.connect(url);
 	var x;
@@ -9,11 +10,11 @@
 		s = [];
 
 		for (var key in data.crons) {
-			s.push(data.crons[key]);
+			if (data.crons.hasOwnProperty(key)) {
+				s.push(data.crons[key]);
+			}
 		}
-
 		render(s);
-		
 	});
 
 	var jobDone = function (data) {
@@ -120,8 +121,7 @@
 	});
 
 
-
-	var render = function (data) {
+	render = function (data) {
 		x = ReactDOM.render(
 		    <ServiceChooser items={ data } />,
 		    document.getElementById('container')
