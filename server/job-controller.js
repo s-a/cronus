@@ -24,6 +24,10 @@ function JobController(io) {
 			  path: path.join(path.resolve(argv.logFolder || __dirname), "app.log")
 			},*/
 			{
+				level: "warn",
+				path: path.join(path.resolve(argv.logFolder || __dirname), "warn.log")
+			},
+			{
 				level: "error",
 				path: path.join(path.resolve(argv.logFolder || __dirname), "error.log")
 			}
@@ -114,6 +118,11 @@ JobController.prototype.emitError = function(e, job) {
 	}
 	this.io.sockets.emit("error", { job : job, exception: e, result: false });
 	this.log.error(e);
+};
+
+JobController.prototype.emitRemoved = function(path) {
+	this.io.sockets.emit("removed", { path : path });
+	this.log.warn("removed file " + path);
 };
 
 JobController.prototype.load = function(path, fileinfo) {

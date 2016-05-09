@@ -17,34 +17,56 @@
 		render(s);
 	});
 
+	socket.on("removed", function (data) {
+		// s = [];
+		debugger;
+		for (var key in data.crons) {
+			if (data.crons.hasOwnProperty(key)) {
+				s.push(data.crons[key]);
+			}
+		}
+		render(s);
+	});
+
 	var jobDone = function (data) {
 		var found = false;
 
+		if (data.job){
+			for (var i = 0; i < s.length; i++) {
+				if (s[i].filename === data.job.filename){
+					s[i] = data.job;
+					found = true;
+					break;
+				}
+			}
+			if (!found){
+				s.unshift(data.job);
+			}
+			x.setState({items:s});
+		}
+	};
 
+	var removeJob = function (path) {
 		for (var i = 0; i < s.length; i++) {
-			if (s[i].filename === data.job.filename){
-				s[i] = data.job;
-				found = true;
+			var job = s[i];
+			if (job.filename === path){
+				s.splice(i, 1);
+				x.setState({items:s});
 				break;
 			}
 		}
-		if (!found){
-			s.unshift(data.job);
-		}
-		x.setState({items:s});
-
-		/*if (data.result !== true){
-			var $body = $("body");
-			setInterval(function(){
-				document.title = (document.title === original) ? "MONITOR ERROR" : original;
-
-			}, 1000);
-		}*/
 	};
 
 	var jobDoneErr = function (data) {
 		console.error(data);
-		jobDone(data);
+
+		if (data.exception){
+			if(data.exception.errno === -4058){
+				removeJob(data.exception.path);
+			}
+		} else {
+			jobDone(data);
+		}
 	};
 
 	socket.on("job-done", jobDone);
