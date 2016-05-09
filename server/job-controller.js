@@ -11,7 +11,7 @@ var prettyCron = require('prettycron');
 
 function JobController(io) {
 	var argv = minimist(process.argv.slice(2));
-	this.maxLogItems = 30;
+	this.maxLogItems = 10;
 	this.log = bunyan.createLogger({
 		name: "cronus",
 		streams: [
@@ -60,6 +60,7 @@ JobController.prototype.initialize = function() {
 };
 
 JobController.prototype.execute = function() {
+	this.controller.emitResult(this.job, undefined);
 	this.controller.log.info("exec ", this.job.filename);
 	this.job.lastStart = new Date().getTime();
 	this.job.prettyCron = prettyCron.toString(this.job.cronPattern);
@@ -94,12 +95,12 @@ JobController.prototype.emitResult = function(job, result) {
 	}
 
 	var err = result;
-	if (result === true){
-		err = false;
+	if (result === true || result === false){
+		err = !result;
 	}
 	job.log.unshift({err: err, date: job.lastStart});
 	if (job.log.length > this.maxLogItems){
-		job.log = job.log.slice(1).slice(-this.maxLogItems);
+		job.log = job.log.slice(0, this.maxLogItems);
 	}
 	this.io.sockets.emit("job-done", { job : job, result: result });
 };
@@ -108,7 +109,7 @@ JobController.prototype.emitError = function(e, job) {
 	if(job){
 		job.log.unshift({err: true, date: job.lastStart, exception: e});
 		if (job.log.length > this.maxLogItems){
-			job.log = job.log.slice(1).slice(-this.maxLogItems);
+			job.log = job.log.slice(0, this.maxLogItems);
 		}
 	}
 	this.io.sockets.emit("error", { job : job, exception: e, result: false });

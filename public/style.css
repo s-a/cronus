@@ -14,7 +14,11 @@
 }
 
 .state-err-null{
-	color:blue;
+  color:blue;
+}
+
+.state-err-undefined{
+	color:orange;
 }
 
 .fa{
