@@ -93,19 +93,29 @@ JobController.prototype.stop = function(path) {
 	}
 };
 
+JobController.prototype.sliceLog = function(log) {
+	if (log.length > this.maxLogItems){
+		log = log.slice(0, this.maxLogItems);
+	}
+	return log;
+};
+
+JobController.prototype.initError = function(result) {
+	var err = result;
+	if (result === true || result === false){
+		err = !result;
+	}
+	return err;
+};
+
 JobController.prototype.emitResult = function(job, result) {
 	if (!job.log){
 		job.log = [];
 	}
 
-	var err = result;
-	if (result === true || result === false){
-		err = !result;
-	}
+	var err = this.initError(result);
 	job.log.unshift({err: err, date: job.lastStart});
-	if (job.log.length > this.maxLogItems){
-		job.log = job.log.slice(0, this.maxLogItems);
-	}
+	job.log = this.sliceLog(job.log);
 	this.io.sockets.emit("job-done", { job : job, result: result });
 };
 
