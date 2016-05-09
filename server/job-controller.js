@@ -59,18 +59,21 @@ JobController.prototype.initialize = function() {
 	}
 };
 
+JobController.prototype.execute = function() {
+	this.controller.log.info("exec ", this.job.filename);
+	this.job.lastStart = new Date().getTime();
+	this.job.prettyCron = prettyCron.toString(this.job.cronPattern);
+	var result = this.job.test(this.controller);
+	this.controller.emitResult(this.job, result);
+};
+
 JobController.prototype.schedule = function(job) {
 	this.log.info("prepare cron ", job.filename);
-	var self = this;
-	var result = false;
-	var cron = new CronJob(job.cronPattern, function() {
-		self.log.info("exec ", job.filename);
-		job.lastStart = new Date().getTime();
-		job.prettyCron = prettyCron.toString(job.cronPattern);
-		result = job.test(self);
-		self.emitResult(job, result);
-	});
-
+	var context = {
+		job:job,
+		controller:this
+	}
+	var cron = new CronJob(job.cronPattern, this.execute.bind(context));
 	this.jobs[job.filename] = job;
 	this.crons[job.filename] = cron;
 	return cron;
@@ -119,7 +122,7 @@ JobController.prototype.load = function(path, fileinfo) {
 		job.fileinfo = fileinfo;
 		job.prettyCron = prettyCron.toString(job.cronPattern);
 
-		this.log.info("testing monitor method .test()", path);
+		this.log.info("testing monitor method .test() of", path);
 		job.test(this);
 
 
@@ -127,7 +130,7 @@ JobController.prototype.load = function(path, fileinfo) {
 		cron.start();
 
 	} catch(e){
-		this.emitError(e,job)
+		this.emitError(e, job)
 	}
 };
 
