@@ -59,7 +59,7 @@
 		render: function() {
 			var self = this;
 			var services = this.props.items.map(function(s){
-				return <Service prettyCron={s.prettyCron} cronPattern={s.cronPattern} log={s.log} lastStart={s.lastStart} name={s.name} description={s.description} price={s.price} active={s.active} addTotal={self.addTotal} />;
+				return <Service iconCssClassName={s.iconCssClassName} prettyCron={s.prettyCron} cronPattern={s.cronPattern} log={s.log} lastStart={s.lastStart} name={s.name} description={s.description} price={s.price} active={s.active} addTotal={self.addTotal} />;
 			});
 			return <div>
 				<div id="services">
