@@ -77,7 +77,11 @@
 			var items = this.props.items || [];
 
 			var logitems = items.map(function(s){
-				return <i title={"Started: " + moment(s.date).calendar()} className={"fa " + (s.err ? "fa-exclamation-triangle" : "fa-check-square") + " state-err-" + s.err} aria-hidden="true"></i>;
+				var icon = (s.err ? "fa-exclamation-triangle" : "fa-check-square");
+				if (s.err === null){
+					icon = "fa-hourglass-start";
+				}
+				return <i title={"Started: " + moment(s.date).calendar()} className={"fa " + icon + " state-err-" + s.err} aria-hidden="true"></i>;
 			});
 
 			return <div className="row">

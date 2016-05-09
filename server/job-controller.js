@@ -76,6 +76,7 @@ JobController.prototype.schedule = function(job) {
 	var cron = new CronJob(job.cronPattern, this.execute.bind(context));
 	this.jobs[job.filename] = job;
 	this.crons[job.filename] = cron;
+	this.emitResult(job, null);
 	return cron;
 };
 
@@ -91,7 +92,12 @@ JobController.prototype.emitResult = function(job, result) {
 	if (!job.log){
 		job.log = [];
 	}
-	job.log.unshift({err: !result, date: job.lastStart});
+
+	var err = result;
+	if (result === true){
+		err = false;
+	}
+	job.log.unshift({err: err, date: job.lastStart});
 	if (job.log.length > this.maxLogItems){
 		job.log = job.log.slice(1).slice(-this.maxLogItems);
 	}

@@ -10,8 +10,13 @@
 	color:red;
 }
 .state-err-false{
-	color:green;
+  color:green;
 }
+
+.state-err-null{
+	color:blue;
+}
+
 .fa{
 	margin-right: 5px;
 }
