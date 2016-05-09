@@ -118,7 +118,7 @@
 						<div className={ "row " + (this.state.active ? 'active' : '') } onClick={this.clickHandler}>
 							<div className="col-md-6">
 								<i className={"job-icon " + (this.props.iconCssClassName ? this.props.iconCssClassName : "fa fa-signal")} aria-hidden="true"></i>
-								{this.props.description}
+								<strong>{this.props.description}</strong>
 							</div>
 							<div className="col-md-5">
 								<code>"{this.props.cronPattern}"</code> | lastStart: {moment(this.props.lastStart).calendar()}
