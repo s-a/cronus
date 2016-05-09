@@ -90,7 +90,7 @@
 				if (s.err === undefined){
 					icon = "fa-hourglass-start";
 				}
-				return <i title={"Started: " + moment(s.date).calendar()} className={"fa " + icon + " state-err-" + s.err} aria-hidden="true"></i>;
+				return <span><i title={"Started: " + moment(s.date).calendar()} className={"fa " + icon + " state-err-" + s.err} aria-hidden="true"></i> <span className="log-date-text" title={"Started: " + moment(s.date).calendar()}>{moment(s.date).calendar()}</span></span>;
 			});
 
 			return <div className="row">

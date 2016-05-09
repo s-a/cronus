@@ -22,8 +22,14 @@
 }
 
 .fa{
-	margin-right: 5px;
+  margin-right: 5px;
 }
+
+.log-date-text{
+  font-size: 10px;
+  margin-right: 11px;
+}
+
 .job-icon{
 	font-size: 22px;
 	color: green;
