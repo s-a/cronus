@@ -10,15 +10,16 @@ var Job = function() {
 };
 
 
-Job.prototype.testAsnc = function(controller, done) {
+Job.prototype.testAsync = function(controller, done) {
 	var time = 2000;
+	var self = this;
 	if (this.shouldTimeout){
 		time = 6000;
 	}
 	this.shouldTimeout = !this.shouldTimeout;
 	
 	setTimeout(function () {
-		done(true);
+		done(self.shouldTimeout);
 	}, time);
 	//return true;
 };

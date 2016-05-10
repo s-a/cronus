@@ -77,8 +77,8 @@ JobController.prototype.execute = function() {
 	this.job.lastStart = new Date().getTime();
 	this.job.prettyCron = prettyCron.toString(this.job.cronPattern);
 
-	if (!this.job.testAsnc){
-		this.job.testAsnc = function (controller, doneCallback) {
+	if (!this.job.testAsync){
+		this.job.testAsync = function (controller, doneCallback) {
 			setTimeout(function () {
 				var result = self.job.test(controller);
 				doneCallback(result);
@@ -94,7 +94,7 @@ JobController.prototype.execute = function() {
 
 	this.controller.log.info("exec ", this.job.filename);
 	this.controller.emitResult(this.job/*, undefined*/); // emit job started
-	this.job.testAsnc(this.controller, done);
+	this.job.testAsync(this.controller, done);
 };
 
 JobController.prototype.schedule = function(job) {

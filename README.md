@@ -83,7 +83,7 @@ var Job = function() {
 };
 
 
-Job.prototype.testAsnc = function(controller, done) {
+Job.prototype.testAsync = function(controller, done) {
 	var time = 2000;
 	if (this.shouldTimeout){
 		time = 6000;
