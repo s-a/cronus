@@ -102,7 +102,7 @@ JobController.prototype.schedule = function(job) {
 	var context = {
 		job:job,
 		controller:this
-	}
+	};
 	var cron = new CronJob(job.cronPattern, this.execute.bind(context));
 	this.jobs[job.filename] = job;
 	this.crons[job.filename] = cron;
