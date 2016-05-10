@@ -48,22 +48,52 @@ $ npm start;
 
 Detailed description : [https://github.com/ncb000gt/node-cron](https://github.com/ncb000gt/node-cron)
 
-## Example monitor job
+## Example sync monitor job
 ```javascript
 "use strict";
 
 var Job = function() {
-	this.cronPattern = "*/10 * * * * *";
-	this.name = "unicorn 10";
-	this.description = "You will see this message every 10 seconds";
+	this.cronPattern = "* * * * * *";
+	this.name = "unicorn ONE";
+	this.description = "You will see this message every second";
+	this.iconCssClassName = "fa fa-database";
 
 	return this;
 };
 
 
-Job.prototype.test = function(controller) {
-	// your job code here.
-	return true;
+Job.prototype.test = function(/*controller*/) {
+	return false;
+};
+
+module.exports = Job;
+```
+
+## Example async monitor job
+```javascript
+"use strict";
+
+var Job = function() {
+	this.cronPattern = "*/20 * * * * *";
+	this.name = "unicorn timeout";
+	this.description = "20-seconds rotating timeout";
+	this.iconCssClassName = "fa fa-calendar-times-o";
+	this.shouldTimeout = false;
+	return this;
+};
+
+
+Job.prototype.testAsnc = function(controller, done) {
+	var time = 2000;
+	if (this.shouldTimeout){
+		time = 6000;
+	}
+	this.shouldTimeout = !this.shouldTimeout;
+
+	setTimeout(function () {
+		done(true);
+	}, time);
+	//return true;
 };
 
 module.exports = Job;
