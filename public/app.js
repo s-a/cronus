@@ -18,8 +18,6 @@
 	});
 
 	socket.on("removed", function (data) {
-		// s = [];
-		debugger;
 		for (var key in data.crons) {
 			if (data.crons.hasOwnProperty(key)) {
 				s.push(data.crons[key]);
@@ -81,7 +79,7 @@
 		render: function() {
 			var self = this;
 			var services = this.props.items.map(function(s){
-				return <Service iconCssClassName={s.iconCssClassName} prettyCron={s.prettyCron} cronPattern={s.cronPattern} log={s.log} lastStart={s.lastStart} name={s.name} description={s.description} price={s.price} active={s.active} addTotal={self.addTotal} />;
+				return <Service iconCssClassName={s.iconCssClassName} prettyCron={s.prettyCron} cronPattern={s.cronPattern} log={s.log} lastStart={s.lastStart} name={s.name} description={s.description} active={s.active} />;
 			});
 			return <div>
 				<div id="services">
@@ -98,21 +96,28 @@
 			var self = this;
 			var items = this.props.items || [];
 
-			var logitems = items.map(function(s){
+			var logitems = items.map(function(s, e){
+				var title = "Started: " + moment(s.date).calendar();
 				var icon = "fa-question-circle";
-				if (s.err === true){
-					icon = "fa-check-square";
+				if (s.exception){
+					icon = "fa-calendar-times-o";
+					title += " timed out!";
+				} else {
+					if (s.err === true){
+						icon = "fa-exclamation-triangle";
+					}
+					if (s.err === false){
+						icon = "fa-check-square";
+					}
+					if (s.err === null){
+						icon = "fa-clock-o";
+					}
+					if (s.err === undefined){
+						icon = "fa-hourglass-start";
+					}
 				}
-				if (s.err === false){
-					icon = "fa-exclamation-triangle";
-				}
-				if (s.err === null){
-					icon = "fa-clock-o";
-				}
-				if (s.err === undefined){
-					icon = "fa-hourglass-start";
-				}
-				return <span><i title={"Started: " + moment(s.date).calendar()} className={"fa " + icon + " state-err-" + s.err} aria-hidden="true"></i> <span className="log-date-text" title={"Started: " + moment(s.date).calendar()}>{moment(s.date).calendar()}</span></span>;
+
+				return <span><i title={title} className={"fa " + icon + " state-err-" + s.err} aria-hidden="true"></i> <span className="log-date-text" title={"Started: " + moment(s.date).calendar()}>{moment(s.date).calendar()}</span></span>;
 			});
 
 			return <div className="row">
@@ -149,7 +154,7 @@
 								<b>{this.props.name}</b>
 							</div>
 						</div>
-						<ServiceLog lastStart={"Last start: " + moment(this.props.lastStart).calendar()} items={this.props.log} />
+						<ServiceLog lastStart={"Last start: " + moment(this.props.lastStart).calendar()} items={this.props.log}  />
 
 					</div>;
 		}

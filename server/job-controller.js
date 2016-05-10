@@ -63,13 +63,38 @@ JobController.prototype.initialize = function() {
 	}
 };
 
+
 JobController.prototype.execute = function() {
-	this.controller.emitResult(this.job, undefined);
-	this.controller.log.info("exec ", this.job.filename);
+	var self = this;
+   	var timeoutTimer = setTimeout(function() {
+        timeoutTimer = null;
+        var err = new Error(self.job.filename + " timeout (" + self.job.timeout + ")");
+        err.errno = 666;
+        self.controller.emitError(err, self.job); // emit job timed out
+    }, this.job.timeout);
+
+
 	this.job.lastStart = new Date().getTime();
 	this.job.prettyCron = prettyCron.toString(this.job.cronPattern);
-	var result = this.job.test(this.controller);
-	this.controller.emitResult(this.job, result);
+
+	if (!this.job.testAsnc){
+		this.job.testAsnc = function (controller, doneCallback) {
+			setTimeout(function () {
+				var result = self.job.test(controller);
+				doneCallback(result);
+			}, 1);
+		};
+	}
+
+	var done = function(result) {
+		clearTimeout(timeoutTimer);
+		self.controller.log.info("done ", self.job.filename, result);
+		self.controller.emitResult(self.job, result);
+	};
+
+	this.controller.log.info("exec ", this.job.filename);
+	this.controller.emitResult(this.job, undefined); // emit job started
+	this.job.testAsnc(this.controller, done);
 };
 
 JobController.prototype.schedule = function(job) {
@@ -126,6 +151,7 @@ JobController.prototype.emitError = function(e, job) {
 			job.log = job.log.slice(0, this.maxLogItems);
 		}
 	}
+
 	this.io.sockets.emit("error", { job : job, exception: e, result: false });
 	this.log.error(e);
 };
@@ -143,13 +169,14 @@ JobController.prototype.load = function(path, fileinfo) {
 		delete require.cache[require.resolve(path)];
 		var JOB = require(path);
 		job = new JOB()
+		job.timeout = job.timeout || 5000;
 		job.log = [];
 		job.filename = path;
 		job.fileinfo = fileinfo;
 		job.prettyCron = prettyCron.toString(job.cronPattern);
 
-		this.log.info("testing monitor method .test() of", path);
-		job.test(this);
+		/*this.log.info("testing monitor method .test() of", path);
+		job.test(this);*/
 
 
 		var cron = this.schedule(job);

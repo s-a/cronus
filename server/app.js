@@ -10,7 +10,6 @@ var io = require('socket.io')(server);
 var argv = minimist(process.argv.slice(2));
 
 var port = argv.port || 3000;
-console.log(port);
 server.listen(port);
 
 app.use(express.static('public'));

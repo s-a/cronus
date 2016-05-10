@@ -146,7 +146,6 @@ code {
 .ellipsed{
   font-size: 22px;
   white-space: nowrap;
-  width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
 }
