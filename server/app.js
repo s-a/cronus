@@ -3,7 +3,7 @@
 var minimist = require("minimist");
 var express = require("express");
 var app = require("express")();
-var server = require("http").Server(app);
+var server = new require("http").Server(app);
 var io = require("socket.io")(server);
 
 

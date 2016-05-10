@@ -1,5 +1,7 @@
-(function(io){
 "use strict";
+/* jshint ignore:start */
+(function(io, moment, React, ReactDOM){
+/* jshint ignore:end */
 
 	var render;
 	var url = location.protocol + "//" + location.hostname + (location.port ? ":" + location.port : "");
@@ -36,7 +38,7 @@
 			}
 		}
 		return found;
-	}
+	};
 
 	var updateJobViewModel = function (data) {
 		var found = updateJobByFilename(data);
@@ -77,7 +79,6 @@
 
 	socket.on("job-done", jobDone);
 	socket.on("error", jobDoneErr);
-
 
 	/* jshint ignore:start */
 	var ServiceChooser = React.createClass({
@@ -148,7 +149,7 @@
 		},
 		render: function(){
 			return <div className="container paper-shadow-top-z-2 card" title={this.props.prettyCron}>
-						<div className={ "row " + (this.state.active ? 'active' : '') } onClick={this.clickHandler}>
+						<div className={ "row " + (this.state.active ? "active" : "") } onClick={this.clickHandler}>
 							<div className="col-md-6">
 								<i className={"job-icon " + (this.props.iconCssClassName ? this.props.iconCssClassName : "fa fa-signal")} aria-hidden="true"></i>
 								<strong>{this.props.description}</strong>
@@ -170,9 +171,9 @@
 	render = function (data) {
 		x = ReactDOM.render(
 			<ServiceChooser items={ data } />,
-			document.getElementById('container')
+			document.getElementById("container")
 		);
 	};
 	/* jshint ignore:end */
 
-})(window.io);
+})(window.io, window.moment, window.React, window.ReactDOM);
