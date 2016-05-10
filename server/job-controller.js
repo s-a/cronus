@@ -6,7 +6,7 @@ var chokidar = require("chokidar");
 var minimist = require("minimist");
 var bunyan = require("bunyan");
 var CronJob = require("cron").CronJob;
-var prettyCron = require('prettycron');
+var prettyCron = require("prettycron");
 /*var parser = require('cron-parser');*/
 
 function JobController(io) {
@@ -51,8 +51,8 @@ JobController.prototype.initialize = function() {
 		var folder = argv.folder[i];
 		this.log.info("watch", folder);
 		var watcher = chokidar.watch(path.resolve(folder), {
-		  ignored: /[\/\\]\./,
-		  persistent: true
+			ignored: /[\/\\]\./,
+			persistent: true
 		});
 
 		watcher
@@ -66,12 +66,12 @@ JobController.prototype.initialize = function() {
 
 JobController.prototype.execute = function() {
 	var self = this;
-   	var timeoutTimer = setTimeout(function() {
-        timeoutTimer = null;
-        var err = new Error(self.job.filename + " timeout (" + self.job.timeout + ")");
-        err.errno = 666;
-        self.controller.emitError(err, self.job); // emit job timed out
-    }, this.job.timeout);
+	var timeoutTimer = setTimeout(function() {
+		timeoutTimer = null;
+		var err = new Error(self.job.filename + " timeout (" + self.job.timeout + ")");
+		err.errno = 666;
+		self.controller.emitError(err, self.job); // emit job timed out
+	}, this.job.timeout);
 
 
 	this.job.lastStart = new Date().getTime();
@@ -93,7 +93,7 @@ JobController.prototype.execute = function() {
 	};
 
 	this.controller.log.info("exec ", this.job.filename);
-	this.controller.emitResult(this.job, undefined); // emit job started
+	this.controller.emitResult(this.job/*, undefined*/); // emit job started
 	this.job.testAsnc(this.controller, done);
 };
 
@@ -168,7 +168,7 @@ JobController.prototype.load = function(path, fileinfo) {
 		this.stop(path);
 		delete require.cache[require.resolve(path)];
 		var JOB = require(path);
-		job = new JOB()
+		job = new JOB();
 		job.timeout = job.timeout || 5000;
 		job.log = [];
 		job.filename = path;
@@ -183,7 +183,7 @@ JobController.prototype.load = function(path, fileinfo) {
 		cron.start();
 
 	} catch(e){
-		this.emitError(e, job)
+		this.emitError(e, job);
 	}
 };
 

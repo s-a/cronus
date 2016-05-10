@@ -1,5 +1,5 @@
-"use strict";
 (function(io){
+"use strict";
 
 	var render;
 	var url = location.protocol + "//" + location.hostname + (location.port ? ":" + location.port : "");
@@ -26,21 +26,29 @@
 		render(s);
 	});
 
-	var jobDone = function (data) {
+	var updateJobByFilename = function (data) {
 		var found = false;
+		for (var i = 0; i < s.length; i++) {
+			if (s[i].filename === data.job.filename){
+				s[i] = data.job;
+				found = true;
+				break;
+			}
+		}
+		return found;
+	}
 
+	var updateJobViewModel = function (data) {
+		var found = updateJobByFilename(data);
+		if (!found){
+			s.unshift(data.job);
+		}
+		x.setState({items:s});
+	};
+
+	var jobDone = function (data) {
 		if (data.job){
-			for (var i = 0; i < s.length; i++) {
-				if (s[i].filename === data.job.filename){
-					s[i] = data.job;
-					found = true;
-					break;
-				}
-			}
-			if (!found){
-				s.unshift(data.job);
-			}
-			x.setState({items:s});
+			updateJobViewModel(data);
 		}
 	};
 
@@ -71,7 +79,7 @@
 	socket.on("error", jobDoneErr);
 
 
-
+	/* jshint ignore:start */
 	var ServiceChooser = React.createClass({
 		getInitialState: function(){
 			return { };
@@ -90,10 +98,8 @@
 	});
 
 	var ServiceLog = React.createClass({
-
-
 		render: function() {
-			var self = this;
+			
 			var items = this.props.items || [];
 
 			var logitems = items.map(function(s, e){
@@ -121,10 +127,10 @@
 			});
 
 			return <div className="row">
-						<div className="col-md-12 ellipsed">
-							{logitems}
-						</div>
-					</div>;
+				<div className="col-md-12 ellipsed">
+					{logitems}
+				</div>
+			</div>;
 
 		}
 	});
@@ -166,6 +172,7 @@
 			<ServiceChooser items={ data } />,
 			document.getElementById('container')
 		);
-	}
+	};
+	/* jshint ignore:end */
 
-})(io);
+})(window.io);
