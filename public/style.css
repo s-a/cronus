@@ -1,7 +1,11 @@
 #connected{
   display:none;
+  color:green;
 }
 
+.fa-server{
+  color: blue;
+}
 
 #loading{
   color:red;

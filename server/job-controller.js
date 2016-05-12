@@ -47,6 +47,11 @@ JobController.prototype.initialize = function() {
 		argv.folder = [argv.folder];
 	}
 
+	if (!argv.folder){
+		console.log("No job folder specified. Use --folder parameter");
+		process.exit(1);
+	}
+
 	for (var i = 0; i < argv.folder.length; i++) {
 		var folder = argv.folder[i];
 		this.log.info("watch", folder);

@@ -27,9 +27,7 @@ $ node server/test.js --script jobs/1-minute.js;
 
 ## Start server
 ```bash
-$ npm start;
-# or
-# $node server/app.js --port 3000 --folder ./jobs [--logFolder d:\logs];
+$ sa-cronus [--port 3000] --folder ./jobs [--logFolder d:\logs];
 ```
 
 ## Cron patterns
