@@ -1,6 +1,6 @@
 "use strict";
 /* jshint ignore:start */
-(function(io, moment, React, ReactDOM){
+(function(io, moment, React, ReactDOM, $){
 /* jshint ignore:end */
 
 	var render;
@@ -188,4 +188,4 @@
 	};
 	/* jshint ignore:end */
 
-})(window.io, window.moment, window.React, window.ReactDOM);
+})(window.io, window.moment, window.React, window.ReactDOM, window.jQuery);

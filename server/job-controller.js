@@ -40,6 +40,13 @@ function JobController(io) {
 	return this;
 }
 
+JobController.prototype.validateArguments = function(argv) {
+	if (!argv.folder){
+		console.log("No job folder specified. Use --folder parameter");
+		process.exit(1);
+	}
+};
+
 JobController.prototype.initialize = function() {
 
 	var argv = minimist(process.argv.slice(2));
@@ -47,10 +54,7 @@ JobController.prototype.initialize = function() {
 		argv.folder = [argv.folder];
 	}
 
-	if (!argv.folder){
-		console.log("No job folder specified. Use --folder parameter");
-		process.exit(1);
-	}
+	this.validateArguments(argv);
 
 	for (var i = 0; i < argv.folder.length; i++) {
 		var folder = argv.folder[i];
