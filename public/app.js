@@ -136,7 +136,7 @@
 					}
 				}
 
-				return <span><i title={title} className={"fa " + icon + " state-err-" + s.err} aria-hidden="true"></i> <span className="log-date-text" title={"Started: " + moment(s.date).calendar()}>{moment(s.date).calendar()}</span></span>;
+				return <span><i title={title} className={"fa " + icon + " state-err-" + s.err} aria-hidden="true"></i> <span className="log-date-text hidden-xs hidden-sm" title={"Started: " + moment(s.date).calendar()}>{moment(s.date).calendar()}</span></span>;
 			});
 
 			return <div className="row">
