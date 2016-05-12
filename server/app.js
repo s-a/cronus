@@ -19,10 +19,11 @@ app.use(express.static("node_modules/socket.io/node_modules/socket.io-client/"))
 
 var JobController = require("./job-controller");
 var jobController = new JobController(io);
-
+var pack  = require("./../package.json");
+var serverStartTime = new Date().getTime();
  
 io.on("connection", function (socket) {
-	socket.emit("init", { crons: jobController.jobs });
+	socket.emit("init", { crons: jobController.jobs, package: pack, serverStartTime: serverStartTime });
 	/*socket.on("my other event", function (data) {
 	console.log(data);
 	});*/

@@ -8,7 +8,19 @@
 	var socket = io.connect(url);
 	var x;
 	var s = [];
+
+    socket.on("disconnect", function(){
+		$("#loading").show();
+		$("#connected").hide();
+		$("#server-start-time").text("?");
+    });
+
 	socket.on("init", function (data) {
+
+		$("#loading").hide();
+		$("#connected").show();
+		$("#version").text(data.package.version);
+		$("#server-start-time").text(moment(data.serverStartTime).calendar());
 		s = [];
 
 		for (var key in data.crons) {

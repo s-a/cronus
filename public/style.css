@@ -1,5 +1,11 @@
+#connected{
+  display:none;
+}
 
 
+#loading{
+  color:red;
+}
 
 .error{
   background-color: red;
