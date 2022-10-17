@@ -1,6 +1,6 @@
 {
   "name": "sa-cronus",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "monitoring tool",
   "main": "server/app.js",
   "preferGlobal": true,
