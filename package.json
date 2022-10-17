@@ -1,6 +1,6 @@
 {
   "name": "sa-cronus",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "monitoring tool",
   "main": "server/app.js",
   "preferGlobal": true,
@@ -11,15 +11,15 @@
     "test": "test"
   },
   "dependencies": {
-    "bunyan": "^1.8.1",
-    "chokidar": "^1.4.3",
-    "cron": "^1.1.0",
-    "cron-parser": "^2.0.3",
-    "express": "^4.13.4",
-    "glob": "^7.0.3",
-    "minimist": "^1.2.0",
+    "bunyan": "^1.8.15",
+    "chokidar": "^3.5.3",
+    "cron": "^2.1.0",
+    "cron-parser": "^4.6.0",
+    "express": "^4.18.2",
+    "glob": "^8.0.3",
+    "minimist": "^1.2.7",
     "prettycron": "^0.10.0",
-    "socket.io": "^1.4.5"
+    "socket.io": "^4.5.3"
   },
   "devDependencies": {
     "mocha": "^2.4.5",
