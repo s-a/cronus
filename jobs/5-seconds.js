@@ -1,16 +1,15 @@
-"use strict";
+'use strict'
 
-var Job = function() {
-	this.cronPattern = "*/5 * * * * *";
-	this.name = "unicorn 5";
-	this.description = "You will see this message every 5 seconds";
+const Job = function() {
+	this.cronPattern = '*/5 * * * * *'
+	this.name = 'unicorn 5'
+	this.description = 'You will see this message every 5 seconds'
 
-	return this;
-};
+	return this
+}
 
+Job.prototype.test = function(/* controller */) {
+	return true
+}
 
-Job.prototype.test = function(/*controller*/) {
-	return true;
-};
-
-module.exports = Job;
+module.exports = Job

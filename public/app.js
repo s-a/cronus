@@ -1,8 +1,6 @@
 "use strict";
-/* jshint ignore:start */
-(function(io, moment, React, ReactDOM, $){
-/* jshint ignore:end */
 
+(function(io, moment, React, ReactDOM, $){
 	var render;
 	var url = location.protocol + "//" + location.hostname + (location.port ? ":" + location.port : "");
 	var socket = io.connect(url);
@@ -91,8 +89,7 @@
 
 	socket.on("job-done", jobDone);
 	socket.on("error", jobDoneErr);
-
-	/* jshint ignore:start */
+	
 	var ServiceChooser = React.createClass({
 		getInitialState: function(){
 			return { };
@@ -100,7 +97,9 @@
 		render: function() {
 			var self = this;
 			var services = this.props.items.map(function(s){
+				/* eslint-disable */	
 				return <Service iconCssClassName={s.iconCssClassName} prettyCron={s.prettyCron} cronPattern={s.cronPattern} log={s.log} lastStart={s.lastStart} name={s.name} description={s.description} active={s.active} />;
+				/* eslint-enable */
 			});
 			return <div>
 				<div id="services">
@@ -186,6 +185,4 @@
 			document.getElementById("container")
 		);
 	};
-	/* jshint ignore:end */
-
 })(window.io, window.moment, window.React, window.ReactDOM, window.jQuery);

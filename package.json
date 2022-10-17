@@ -23,10 +23,13 @@
   },
   "devDependencies": {
     "mocha": "^2.4.5",
-    "mocha-jshint": "^2.3.1"
+    "eslint": "^7.32.0",
+    "eslint-plugin-import": "^2.21.2",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^4.3.1",
+    "eslint-plugin-standard": "^4.1.0"
   },
   "scripts": {
-    "test": "node node_modules/mocha/bin/_mocha",
     "debug-mocha": "iron-node node_modules/mocha/bin/_mocha",
     "debug": "iron-node server/app.js --port 3000 --folder ./jobs",
     "dev": "node node_modules/nodemon/bin/nodemon.js ./server/app.js",

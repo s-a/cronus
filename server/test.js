@@ -1,14 +1,22 @@
-"use strict";
+/* eslint-disable no-console */
+const path = require('path')
+const minimist = require('minimist')
+const argv = minimist(process.argv.slice(2))
 
-var path = require("path");
-var minimist = require("minimist");
-var argv = minimist(process.argv.slice(2));
-
-if (argv.script){
-	var JOB = require(path.resolve(argv.script));
-	var job = new JOB();
-	console.log("start");
-	var result = job.test();
-	console.log("result", result);
-	console.log("done");
+async function run() {
+	if (argv.script) {
+		const JOB = require(path.resolve(argv.script))
+		const job = new JOB()
+		console.log('start')
+		let result
+		if (job.verify) {
+			await job.verify
+		} else {
+			job.test()
+		}
+		console.log('result', result)
+		console.log('done')
+	}
 }
+
+run()
