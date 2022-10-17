@@ -102,7 +102,8 @@ JobController.prototype.execute = async function () {
 	this.controller.log.info('exec ', this.job.filename)
 	this.controller.emitResult(this.job/*, undefined */) // emit job started
 	if (this.job.verify) {
-		await this.job.verify(this.controller, done)
+		const res = await this.job.verify(this.controller)
+		done(res)
 	} else {
 		this.job.testAsync(this.controller, done)
 	}
