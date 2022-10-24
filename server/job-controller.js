@@ -82,10 +82,6 @@ JobController.prototype.execute = async function () {
 
 	this.job.lastStart = new Date().getTime()
 	this.job.prettyCron = prettyCron.toString(this.job.cronPattern)
-	const done = function (result) {
-		self.controller.log.info('done ', self.job.filename, result)
-		self.controller.emitResult(self.job, result)
-	}
 
 	this.controller.log.info('exec ', this.job.filename)
 	this.controller.emitResult(this.job/*, undefined */) // emit job started
@@ -100,7 +96,8 @@ JobController.prototype.execute = async function () {
 				}
 			} else {
 				const res = await this.job.verify(this.controller)
-				done(res)
+				self.controller.log.info('done ', self.job.filename, res)
+				self.controller.emitResult(self.job, res)
 			}
 		} else {
 			const e = new Error(`${this.job.filename} verify method is not a promise. Skip Job`)
