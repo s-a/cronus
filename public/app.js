@@ -119,7 +119,7 @@
 				var icon = "fa-question-circle";
 				if (s.exception){
 					icon = "fa-calendar-times-o";
-					title += s.exception.message;
+					title += " " + s.exception.message;
 				} else {
 					if (s.err === true){
 						icon = "fa-exclamation-triangle";
