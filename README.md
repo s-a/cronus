@@ -5,9 +5,6 @@ Schedules custom monitoring jobs and serves a [socket.io](http://socket.io/) con
 
 [![NPM Version](http://img.shields.io/npm/v/sa-cronus.svg)](https://www.npmjs.org/package/sa-cronus)
 [![Build Status](https://travis-ci.org/s-a/cronus.svg)](https://travis-ci.org/s-a/cronus)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/af86e9dc06cc43d3947fae9ad343219a)](https://www.codacy.com/app/stephanahlf/cronus?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=s-a/cronus&amp;utm_campaign=Badge_Grade)
-[![Dependency Status](https://david-dm.org/s-a/cronus.svg)](https://david-dm.org/s-a/cronus)
-[![devDependency Status](https://david-dm.org/s-a/cronus/dev-status.svg)](https://david-dm.org/s-a/cronus#info=devDependencies)
 [![NPM Downloads](https://img.shields.io/npm/dm/sa-cronus.svg)](https://www.npmjs.org/package/sa-cronus)
 [![Massachusetts Institute of Technology (MIT)](https://s-a.github.io/license/img/mit.svg)](/LICENSE.md#mit)
 [![Donate](http://s-a.github.io/donate/donate.svg)](http://s-a.github.io/donate/)
@@ -15,19 +12,53 @@ Schedules custom monitoring jobs and serves a [socket.io](http://socket.io/) con
 ## Demo
 ![demo](/demo.gif "demo")
 
-## Installation
+## Installation standalone
+
 ```bash
 $ npm i -g sa-cronus;
-```
-
-## Develop and test monitoring script modules
-```bash
-$ node server/test.js --script jobs/1-minute.js;
 ```
 
 ## Start server
 ```bash
 $ sa-cronus [--port 3000] --folder ./jobs [--logFolder d:\logs];
+```
+
+## Installation module
+
+```bash
+$ npm i sa-cronus;
+```
+
+## Usage programmatically
+
+```javascript
+#!/usr/bin/env node
+
+const minimist = require('minimist')
+const CronusServer = require('./index.js')
+
+const argv = minimist(process.argv.slice(2))
+const port = argv.port || 3000
+
+const cronusServer = new CronusServer({
+	port,
+	folders: [argv.folder],
+	bunyanLogSettings: {
+		name: 'cronus',
+		streams: [
+			{
+				level: 'trace',
+				stream: process.stdout
+			}
+		]
+	}
+})
+
+const run = async () => {
+	await cronusServer.start()
+}
+
+run()
 ```
 
 ## Cron patterns
@@ -50,8 +81,11 @@ Detailed description : [https://github.com/ncb000gt/node-cron](https://github.co
 
 ### V1.0.0
 
-`job.testAsync` is obsolete use `async job.verify`
-`job.shouldTimeout` `bool` is obsolete use `job.timeout` `int`
+#### Breaking changes
+
+- `job.testAsync` is obsolete use `async job.verify`
+- `job.shouldTimeout` `bool` is obsolete use `job.timeout` `int`
+- `job.timout` is now optional
 
 
 ## Example promise monitor job
@@ -70,7 +104,7 @@ var Job = function () {
 
 
 Job.prototype.verify = async function (controller) {
-	controller.log.warn("invoce async test function")
+	controller.log.warn("invoke async test function")
 	return true;
 };
 

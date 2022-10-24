@@ -8,12 +8,7 @@ async function run() {
 		const JOB = require(path.resolve(argv.script))
 		const job = new JOB()
 		console.log('start')
-		let result
-		if (job.verify) {
-			await job.verify
-		} else {
-			job.test()
-		}
+		const result = await job.verify()
 		console.log('result', result)
 		console.log('done')
 	}

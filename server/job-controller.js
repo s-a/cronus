@@ -1,37 +1,18 @@
 'use strict'
 
+const fs = require('fs')
 const path = require('path')
 const chokidar = require('chokidar')
-const minimist = require('minimist')
 const bunyan = require('bunyan')
 const CronJob = require('cron').CronJob
 const prettyCron = require('prettycron')
 const pTimeout = require('p-timeout')
 
-function JobController(io) {
-	const argv = minimist(process.argv.slice(2))
+function JobController(io, folders, bunyanLogSettings) {
 	this.maxLogItems = 10
-	this.log = bunyan.createLogger({
-		name: 'cronus',
-		streams: [
-			{
-				level: 'info',
-				stream: process.stdout
-			},
-			/* {
-			  level: "info",
-			  path: path.join(path.resolve(argv.logFolder || __dirname), "app.log")
-			}, */
-			{
-				level: 'warn',
-				path: path.join(path.resolve(argv.logFolder || __dirname), 'warn.log')
-			},
-			{
-				level: 'error',
-				path: path.join(path.resolve(argv.logFolder || __dirname), 'error.log')
-			}
-		]
-	})
+	this.folders = folders
+	this.validateArguments()
+	this.log = bunyan.createLogger(bunyanLogSettings)
 
 	this.io = io
 	this.jobs = {}
@@ -44,25 +25,21 @@ JobController.prototype.isAsync = (p) => {
 	return result
 }
 
-JobController.prototype.validateArguments = function (argv) {
-	if (!argv.folder) {
-		// eslint-disable-next-line no-console
-		console.log('No job folder specified. Use --folder parameter')
-		// eslint-disable-next-line no-process-exit
-		process.exit(1)
+JobController.prototype.validateArguments = function () {
+	for (let f = 0; f < this.folders.length; f++) {
+		const folder = this.folders[f]
+		if (!fs.existsSync(folder)) {
+			// eslint-disable-next-line no-console
+			console.log(`Directory "${folder} does not exist"`)
+			// eslint-disable-next-line no-process-exit
+			process.exit(1)
+		}
 	}
 }
 
 JobController.prototype.initialize = function () {
-	const argv = minimist(process.argv.slice(2))
-	if (typeof argv.folder === 'string') {
-		argv.folder = [argv.folder]
-	}
-
-	this.validateArguments(argv)
-
-	for (let i = 0; i < argv.folder.length; i++) {
-		const folder = argv.folder[i]
+	for (let i = 0; i < this.folders.length; i++) {
+		const folder = this.folders[i]
 		this.log.info('watch', folder)
 		const watcher = chokidar.watch(path.resolve(folder), {
 			ignored: /[/\\]\./,
@@ -118,9 +95,7 @@ JobController.prototype.schedule = function (job) {
 	// constructor(cronTime, onTick, onComplete, start, timezone, context, runOnInit, utcOffset, unrefTimeout)
 	const cronTime = job.cronPattern
 	const onTick = this.execute
-	const onComplete = function () {
-		debugger
-	}
+	const onComplete = null
 	const start = false
 	const timezone = 'Europe/Berlin'
 	const runOnInit = false

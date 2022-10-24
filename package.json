@@ -2,7 +2,7 @@
   "name": "sa-cronus",
   "version": "0.0.9",
   "description": "monitoring tool",
-  "main": "server/app.js",
+  "main": "server/index.js",
   "preferGlobal": true,
   "bin": {
     "sa-cronus": "server/app.js"
