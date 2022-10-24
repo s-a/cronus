@@ -1,9 +1,9 @@
 {
   "name": "sa-cronus",
-  "version": "0.0.9",
+  "version": "1.0.0",
   "description": "monitoring tool",
   "main": "server/index.js",
-  "preferGlobal": true,
+  "preferGlobal": false,
   "bin": {
     "sa-cronus": "server/app.js"
   },
