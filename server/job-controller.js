@@ -6,7 +6,7 @@ const minimist = require('minimist')
 const bunyan = require('bunyan')
 const CronJob = require('cron').CronJob
 const prettyCron = require('prettycron')
-/* var parser = require('cron-parser'); */
+const pTimeout = require('p-timeout')
 
 function JobController(io) {
 	const argv = minimist(process.argv.slice(2))
@@ -37,6 +37,11 @@ function JobController(io) {
 	this.jobs = {}
 	this.crons = {}
 	return this
+}
+
+JobController.prototype.isAsync = (p) => {
+	const result = p.constructor.name === 'AsyncFunction'
+	return result
 }
 
 JobController.prototype.validateArguments = function (argv) {
@@ -74,38 +79,36 @@ JobController.prototype.initialize = function () {
 
 JobController.prototype.execute = async function () {
 	const self = this
-	let timeoutTimer = setTimeout(function () {
-		timeoutTimer = null
-		const err = new Error(self.job.filename + ' timeout (' + self.job.timeout + ')')
-		err.errno = 666
-		self.controller.emitError(err, self.job) // emit job timed out
-	}, this.job.timeout)
 
 	this.job.lastStart = new Date().getTime()
 	this.job.prettyCron = prettyCron.toString(this.job.cronPattern)
-
-	if (!this.job.testAsync) {
-		this.job.testAsync = function (controller, doneCallback) {
-			setTimeout(function () {
-				const result = self.job.test(controller)
-				doneCallback(result)
-			}, 1)
-		}
-	}
-
 	const done = function (result) {
-		clearTimeout(timeoutTimer)
 		self.controller.log.info('done ', self.job.filename, result)
 		self.controller.emitResult(self.job, result)
 	}
 
 	this.controller.log.info('exec ', this.job.filename)
 	this.controller.emitResult(this.job/*, undefined */) // emit job started
-	if (this.job.verify) {
-		const res = await this.job.verify(this.controller)
-		done(res)
+
+	if (typeof this.job.verify === 'function') {
+		if (this.controller.isAsync(this.job.verify)) {
+			if (typeof this.job.timeout === 'number') {
+				try {
+					await pTimeout(this.job.verify(this), this.job.timeout)
+				} catch (e) {
+					this.controller.emitError(e, this.job)
+				}
+			} else {
+				const res = await this.job.verify(this.controller)
+				done(res)
+			}
+		} else {
+			const e = new Error(`${this.job.filename} verify method is not a promise. Skip Job`)
+			this.controller.emitError(e, this.job)
+		}
 	} else {
-		this.job.testAsync(this.controller, done)
+		const e = new Error(`${this.job.filename} does not contain verify method. Skip Job`)
+		this.controller.emitError(e, this.job)
 	}
 }
 

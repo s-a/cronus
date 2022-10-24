@@ -46,56 +46,13 @@ $ sa-cronus [--port 3000] --folder ./jobs [--logFolder d:\logs];
 
 Detailed description : [https://github.com/ncb000gt/node-cron](https://github.com/ncb000gt/node-cron)
 
-## Example sync monitor job
-```javascript
-"use strict";
+## Changelog
 
-var Job = function() {
-	this.cronPattern = "* * * * * *";
-	this.name = "unicorn ONE";
-	this.description = "You will see this message every second";
-	this.iconCssClassName = "fa fa-database";
+### V1.0.0
 
-	return this;
-};
+`job.testAsync` is obsolete use `async job.verify`
+`job.shouldTimeout` `bool` is obsolete use `job.timeout` `int`
 
-
-Job.prototype.test = function(/*controller*/) {
-	return false;
-};
-
-module.exports = Job;
-```
-
-## Example async monitor job
-```javascript
-"use strict";
-
-var Job = function() {
-	this.cronPattern = "*/20 * * * * *";
-	this.name = "unicorn timeout";
-	this.description = "20-seconds rotating timeout";
-	this.iconCssClassName = "fa fa-calendar-times-o";
-	this.shouldTimeout = false;
-	return this;
-};
-
-
-Job.prototype.testAsync = function(controller, done) {
-	var time = 2000;
-	if (this.shouldTimeout){
-		time = 6000;
-	}
-	this.shouldTimeout = !this.shouldTimeout;
-
-	setTimeout(function () {
-		done(true);
-	}, time);
-	//return true;
-};
-
-module.exports = Job;
-```
 
 ## Example promise monitor job
 ```javascript
@@ -104,6 +61,8 @@ module.exports = Job;
 var Job = function () {
 	this.cronPattern = "*/2 * * * * *";
 	this.name = "async";
+	this.iconCssClassName = "fa fa-calendar-times-o";
+	this.timeout = 100000
 	this.description = "You will see this message every 2 seconds";
 
 	return this;

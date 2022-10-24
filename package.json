@@ -17,6 +17,7 @@
     "express": "^4.18.2",
     "glob": "^8.0.3",
     "minimist": "^1.2.7",
+    "p-timeout": "^4.1.0",
     "prettycron": "^0.10.0",
     "socket.io": "^4.5.3"
   },
