@@ -3,13 +3,13 @@
 const Job = function() {
 	this.cronPattern = '* * * * * *'
 	this.name = 'unicorn ONE'
-	this.description = 'You will see this message every second'
+	this.description = 'You will see this message every second. Always fails'
 	this.iconCssClassName = 'fa fa-database'
 
 	return this
 }
 
-Job.prototype.test = function(/* controller */) {
+Job.prototype.verify = async function(/* controller */) {
 	return false
 }
 

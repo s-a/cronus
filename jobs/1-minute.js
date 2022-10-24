@@ -9,8 +9,6 @@ const Job = function() {
 	return this
 }
 
-Job.prototype.test = function(/* controller */) {
+Job.prototype.verify = async function(/* controller */) {
 	return true
 }
-
-module.exports = Job

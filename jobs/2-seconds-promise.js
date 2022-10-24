@@ -7,7 +7,7 @@ const Job = function () {
 }
 
 Job.prototype.verify = async function (/* controller */) {
-	// controller.log.warn("invoce async test function")
+	// controller.log.warn("invoke async test function")
 	return true
 }
 
