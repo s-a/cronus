@@ -118,7 +118,16 @@ JobController.prototype.schedule = function (job) {
 		job: job,
 		controller: this
 	}
-	const cron = new CronJob(job.cronPattern, this.execute.bind(context))
+	// constructor(cronTime, onTick, onComplete, start, timezone, context, runOnInit, utcOffset, unrefTimeout)
+	const cronTime = job.cronPattern
+	const onTick = this.execute
+	const onComplete = function () {
+		debugger
+	}
+	const start = false
+	const timezone = 'Europe/Berlin'
+	const runOnInit = false
+	const cron = new CronJob(cronTime, onTick, onComplete, start, timezone, context, runOnInit)
 	this.jobs[job.filename] = job
 	this.crons[job.filename] = cron
 	this.emitResult(job, null)
@@ -163,7 +172,9 @@ JobController.prototype.emitResult = function (job, result) {
 
 JobController.prototype.emitError = function (e, job) {
 	if (job) {
-		job.log.unshift({ err: true, date: job.lastStart, exception: e })
+		const exception = JSON.parse(JSON.stringify(e))
+		exception.message = e.message
+		job.log.unshift({ err: true, date: job.lastStart, exception })
 		if (job.log.length > this.maxLogItems) {
 			// eslint-disable-next-line no-param-reassign
 			job.log = job.log.slice(0, this.maxLogItems)
@@ -187,14 +198,10 @@ JobController.prototype.load = function (path, fileinfo) {
 		delete require.cache[require.resolve(path)]
 		const JOB = require(path)
 		job = new JOB()
-		job.timeout = job.timeout || 5000
 		job.log = []
 		job.filename = path
 		job.fileinfo = fileinfo
 		job.prettyCron = prettyCron.toString(job.cronPattern)
-
-		/* this.log.info("testing monitor method .test() of", path);
-		job.test(this); */
 
 		const cron = this.schedule(job)
 		cron.start()
