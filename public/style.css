@@ -1,52 +1,54 @@
-#connected{
-  display:none;
-  color:green;
+#connected {
+  display: none;
+  color: green;
 }
 
-.fa-server{
+.fa-server {
   color: blue;
 }
 
-#loading{
-  color:red;
+#loading {
+  color: red;
 }
 
-.error{
+.error {
   background-color: red;
   color: white;
 }
 
-.state-err-true{
-	color:red;
-}
-.state-err-false{
-  color:green;
+.state-err-true {
+  color: red;
 }
 
-.state-err-null{
-  color:blue;
+.state-err-false {
+  color: green;
 }
 
-.state-err-undefined{
-	color:orange;
+.state-err-null {
+  color: blue;
 }
 
-.fa{
-  margin-right: 5px;
+.state-err-undefined {
+  color: orange;
 }
 
-.log-date-text{
+.fa {
+  font-size: 11px;
+}
+
+.log-date-text {
   font-size: 10px;
   margin-right: 11px;
 }
 
-.job-icon{
-	font-size: 22px;
-	color: blue;
+.job-icon {
+  font-size: 22px;
+  margin-right: 11px;
+  color: blue;
 }
 
 
- paper-shadow,
+paper-shadow,
 paper-animated-shadow {
   display: block;
   position: relative;
@@ -103,12 +105,14 @@ paper-shadow::shadow #shadow-top[animated] {
   box-shadow: 0 27px 55px 0 rgba(0, 0, 0, 0.3);
 }
 
-.card{
-    margin-bottom: 22px;
+.card {
+  padding: 11px;
+  margin-bottom: 11px;
 }
-.card:hover{
-    box-shadow: 0 17px 17px 0 rgba(0, 0, 0, 0.15);
-    cursor: pointer;
+
+.card:hover {
+  box-shadow: 0 17px 17px 0 rgba(0, 0, 0, 0.15);
+
 }
 
 /* Sticky footer styles
@@ -116,7 +120,10 @@ paper-shadow::shadow #shadow-top[animated] {
 html {
   position: relative;
   min-height: 100%;
+  margin-left: 22px;
+  margin-right: 22px;
 }
+
 body {
   margin-top: 60px;
   /* Margin bottom by footer height */
@@ -137,14 +144,15 @@ body {
 -------------------------------------------------- */
 /* Not required for template or sticky footer method. */
 
-body > .container {
+body>.container {
   padding: 60px 15px 0;
 }
+
 .container .text-muted {
   margin: 20px 0;
 }
 
-.footer > .container {
+.footer>.container {
   padding-right: 15px;
   padding-left: 15px;
 }
@@ -153,7 +161,7 @@ code {
   font-size: 80%;
 }
 
-.ellipsed{
+.ellipsed {
   font-size: 22px;
   white-space: nowrap;
   overflow: hidden;
