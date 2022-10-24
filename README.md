@@ -35,7 +35,7 @@ $ npm i sa-cronus;
 #!/usr/bin/env node
 
 const minimist = require('minimist')
-const CronusServer = require('./index.js')
+const CronusServer = require('sa-cronus')
 
 const argv = minimist(process.argv.slice(2))
 const port = argv.port || 3000
@@ -81,16 +81,17 @@ Detailed description : [https://github.com/ncb000gt/node-cron](https://github.co
 
 ### V1.0.0
 
+- Migrate to Twitter Bootstrap 5
+
 #### Breaking changes
 
-- `job.testAsync` is obsolete use `async job.verify`
-- `job.shouldTimeout` `bool` is obsolete use `job.timeout` `int`
-- `job.timout` is now optional
-
+- `job.testAsync` is obsolete use `async job.verify` instead
+- `job.shouldTimeout` `bool` is obsolete use `job.timeout` `int` instead
+- `job.timout` is now optional but recommended
 
 ## Example promise monitor job
+
 ```javascript
-"use strict";
 
 var Job = function () {
 	this.cronPattern = "*/2 * * * * *";
